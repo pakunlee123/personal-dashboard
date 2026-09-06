@@ -3,361 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Daily Command Center</title>
+<title>Personal Dashboard</title>
 
 <style>
 *{box-sizing:border-box}
 
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
-  "SF Pro Text","Noto Sans TC",sans-serif;
-  background:#f3f5f8;
-  color:#1d2430;
+:root{
+  --bg:#f4f5f7;
+  --card:#ffffff;
+  --line:#e5e7eb;
+  --text:#20242b;
+  --muted:#7b838f;
+  --soft:#f1f3f6;
 }
 
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,
+  "SF Pro Display","SF Pro Text",
+  "Noto Sans TC",sans-serif;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
 .topbar{
-  height:64px;
+  height:62px;
   padding:0 28px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(255,255,255,.88);
-  border-bottom:1px solid #e5e7eb;
+  background:rgba(255,255,255,.9);
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(18px);
   position:sticky;
   top:0;
-  z-index:10;
-  backdrop-filter:blur(18px);
+  z-index:20;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:16px;
-  font-weight:600;
+  font-size:15px;
+  font-weight:650;
 }
 
 .brand-icon{
   width:30px;
   height:30px;
+  border-radius:9px;
   display:grid;
   place-items:center;
-  border-radius:9px;
+  color:#fff;
   background:linear-gradient(135deg,#438bdc,#7167d7);
-  color:white;
 }
 
-.nav{display:flex;gap:6px}
+.nav{
+  display:flex;
+  gap:5px;
+}
 
 .nav button{
   border:0;
   background:transparent;
+  color:#7b838f;
   padding:8px 13px;
-  border-radius:10px;
-  color:#6d7480;
+  border-radius:9px;
+  font-size:11px;
 }
 
 .nav button.active{
-  background:#e9edf3;
-  color:#202733;
+  background:#e9ecf1;
+  color:#20242b;
 }
+
+/* =========================
+   MAIN
+========================= */
 
 .dashboard{
   max-width:1450px;
   margin:auto;
-  padding:20px 24px;
+  padding:18px 24px 30px;
 }
 
-.hero{
-  min-height:235px;
-  padding:28px 30px;
-  border-radius:24px;
+/* =========================
+   WORLD CLOCK
+========================= */
+
+.time-card{
+  min-height:285px;
+  border-radius:25px;
+  padding:32px 44px 26px;
   color:white;
-  background:linear-gradient(125deg,#398bdc,#536fda 55%,#7167d7);
-  box-shadow:0 16px 40px rgba(49,91,173,.18);
+
+  background:
+    linear-gradient(
+      120deg,
+      #3d8cdb 0%,
+      #536fda 55%,
+      #7168d7 100%
+    );
+
+  box-shadow:
+    0 16px 40px rgba(53,87,160,.18);
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
-.eyebrow{
-  font-size:11px;
-  letter-spacing:.15em;
-  font-weight:700;
-  opacity:.65;
+.time-top{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:42px;
 }
 
-.greeting{
-  margin-top:14px;
-  font-size:17px;
+.time-zone{
+  flex:1;
+  text-align:center;
 }
 
-.time{
-  margin-top:14px;
-  font-size:70px;
+.time-zone .label{
+  font-size:14px;
+  opacity:.82;
+  letter-spacing:.12em;
+  font-weight:650;
+}
+
+.time-zone .time{
+  margin-top:9px;
+  font-size:64px;
   line-height:1;
-  font-weight:300;
-  letter-spacing:-.05em;
+  font-weight:320;
+  letter-spacing:-.055em;
+}
+
+.time-zone .city{
+  margin-top:8px;
+  font-size:12px;
+  opacity:.76;
+}
+
+.time-divider{
+  width:1px;
+  height:100px;
+  background:rgba(255,255,255,.25);
+}
+
+.secondary-times{
+  text-align:center;
+  font-size:12px;
+  opacity:.76;
+  margin-top:20px;
 }
 
 .date{
-  margin-top:10px;
-  font-size:15px;
+  text-align:center;
+  font-size:13px;
+  margin-top:8px;
+  opacity:.92;
 }
 
-.calendar{
-  margin:12px 0;
-  padding:13px 16px;
+/* =========================
+   GRID
+========================= */
+
+.grid{
+  margin-top:13px;
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:13px;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:19px;
+  overflow:hidden;
+  box-shadow:0 7px 22px rgba(30,38,52,.045);
+}
+
+.card-head{
+  height:47px;
+  padding:0 16px;
   display:flex;
   align-items:center;
-  gap:15px;
-  background:white;
-  border:1px solid #e4e7ed;
-  border-radius:18px;
-  box-shadow:0 6px 18px rgba(26,36,52,.04);
+  justify-content:space-between;
+  border-bottom:1px solid #f0f1f3;
 }
 
-.calendar-title{
-  font-size:11px;
-  font-weight:700;
+.card-title{
+  font-size:10px;
   letter-spacing:.12em;
-  color:#66707e;
+  font-weight:700;
+  color:#737b87;
+}
+
+.refresh{
+  width:27px;
+  height:27px;
+  padding:0;
+  border:0;
+  border-radius:8px;
+  background:var(--soft);
+  color:#737b87;
+  font-size:14px;
+}
+
+/* =========================
+   WEATHER
+========================= */
+
+.weather{
+  grid-column:span 4;
+}
+
+.weather-cities{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  padding:10px;
+}
+
+.weather-city{
+  padding:12px;
+  background:#f3f5f8;
+  border-radius:14px;
+}
+
+.place{
+  font-size:11px;
+  font-weight:650;
+}
+
+.weather-main{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:5px;
+}
+
+.weather-temp{
+  font-size:29px;
+  font-weight:600;
+}
+
+.weather-icon{
+  font-size:24px;
+}
+
+.weather-detail{
+  margin-top:3px;
+  font-size:9px;
+  color:var(--muted);
+}
+
+.forecast-mini{
+  padding:0 12px 11px;
+  font-size:9px;
+  color:var(--muted);
+}
+
+/* =========================
+   TRANSPORT
+========================= */
+
+.transport{
+  grid-column:span 8;
+}
+
+.transport-controls{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:9px 13px;
+}
+
+.transport-controls button{
+  border:0;
+  background:#f0f2f5;
+  color:#747b86;
+  border-radius:8px;
+  padding:6px 11px;
+  font-size:10px;
+}
+
+.transport-controls button.active{
+  background:#dfe9f7;
+  color:#37689e;
+  font-weight:650;
+}
+
+.direction{
+  margin-left:auto;
+  color:#7d8490;
+  font-size:10px;
+}
+
+.route-box{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  padding:0 13px 12px;
+}
+
+.route{
+  padding:10px;
+  border-radius:12px;
+  background:#f3f5f8;
+}
+
+.route-time{
+  font-size:15px;
+  font-weight:650;
+}
+
+.route-name{
+  margin-top:3px;
+  font-size:10px;
+}
+
+.route-info{
+  margin-top:3px;
+  color:#7d8490;
+  font-size:9px;
+}
+
+/* =========================
+   CALENDAR
+========================= */
+
+.calendar{
+  grid-column:span 7;
 }
 
 .calendar-tabs{
   display:flex;
-  gap:4px;
+  gap:5px;
+  padding:9px 13px;
 }
 
 .calendar-tabs button{
   border:0;
+  background:#f0f2f5;
+  color:#747b86;
   padding:6px 10px;
-  border-radius:9px;
-  background:#f0f2f6;
-  color:#69717d;
-  font-size:11px;
-}
-
-.calendar-tabs button.active{
-  background:#e1e8f6;
-  color:#2d5f9c;
-  font-weight:700;
-}
-
-.calendar-status{
-  font-size:12px;
-  color:#8a919c;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(12,minmax(0,1fr));
-  gap:12px;
-}
-
-.card{
-  background:white;
-  border:1px solid #e4e7ed;
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 8px 24px rgba(25,35,50,.045);
-}
-
-.card-head{
-  height:48px;
-  padding:0 17px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.card-title{
-  font-size:11px;
-  letter-spacing:.13em;
-  font-weight:700;
-  color:#727a86;
-}
-
-.weather{grid-column:span 5}
-.forecast{grid-column:span 7}
-.schedule{grid-column:span 6}
-.roster{grid-column:span 6}
-.transport{grid-column:span 6}
-.todo{grid-column:span 6}
-.language{grid-column:span 4}
-
-.weather-row{
-  margin:0 14px 9px;
-  padding:12px;
-  border-radius:15px;
-  background:#f2f5fa;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.location{
-  font-size:13px;
-  font-weight:650;
-}
-
-.temperature{
-  margin-top:3px;
-  font-size:32px;
-  font-weight:650;
-}
-
-.weather-info{
-  font-size:10px;
-  color:#747c88;
-}
-
-.weather-icon{font-size:26px}
-
-.forecast-row{
-  display:grid;
-  grid-template-columns:65px 35px 1fr 80px;
-  align-items:center;
-  padding:10px 17px;
-  border-top:1px solid #eef0f3;
-}
-
-.forecast-day{
-  display:flex;
-  flex-direction:column;
-}
-
-.forecast-day b{font-size:12px}
-.forecast-day small{
-  color:#89909b;
+  border-radius:8px;
   font-size:9px;
 }
 
-.rain{
-  color:#4c9ad4;
-  font-size:10px;
-}
-
-.temp-range{
-  text-align:right;
-  font-size:12px;
-  font-weight:600;
+.calendar-tabs button.active{
+  background:#dfe9f7;
+  color:#37689e;
 }
 
 .empty{
-  min-height:110px;
+  min-height:94px;
   display:flex;
   align-items:center;
   justify-content:center;
   flex-direction:column;
-  gap:7px;
+  gap:6px;
   color:#8a919c;
-  font-size:12px;
-  padding:20px;
+  font-size:10px;
+  padding:12px;
 }
 
 .empty strong{
-  color:#525a66;
-  font-size:13px;
-}
-
-.connect{
-  border:0;
-  border-radius:9px;
-  padding:7px 12px;
-  background:#edf2fa;
-  color:#4674aa;
+  color:#555d68;
   font-size:11px;
 }
 
-.route{
-  margin:8px 15px;
-  padding:12px;
-  border-radius:12px;
-  background:#f2f5fa;
-  color:#89909b;
-  font-size:11px;
+/* =========================
+   ROSTER
+========================= */
+
+.roster{
+  grid-column:span 5;
+}
+
+.roster-main{
+  padding:11px 13px;
+}
+
+.roster-today{
+  padding:11px;
+  background:#f3f5f8;
+  border-radius:13px;
+  margin-bottom:7px;
+}
+
+.roster-label{
+  font-size:8px;
+  color:#8a919b;
+  letter-spacing:.1em;
+}
+
+.roster-duty{
+  margin-top:4px;
+  font-size:18px;
+  font-weight:650;
+}
+
+.roster-time{
+  margin-top:3px;
+  color:#747c87;
+  font-size:9px;
+}
+
+.roster-row{
+  display:grid;
+  grid-template-columns:60px 1fr auto;
+  align-items:center;
+  gap:8px;
+  padding:7px 3px;
+  border-top:1px solid #f0f1f3;
+  font-size:10px;
+}
+
+.tag{
+  background:#eef0f3;
+  border-radius:6px;
+  padding:3px 6px;
+  font-size:8px;
+  color:#727985;
+}
+
+/* =========================
+   TODAY SCHEDULE
+========================= */
+
+.today{
+  grid-column:span 6;
+}
+
+.event-row{
+  display:grid;
+  grid-template-columns:55px 1fr auto;
+  gap:8px;
+  align-items:center;
+  padding:9px 14px;
+  border-top:1px solid #f0f1f3;
+  font-size:10px;
+}
+
+.event-time{
+  font-weight:650;
+}
+
+.event-source{
+  font-size:8px;
+  color:#858c97;
+}
+
+/* =========================
+   TODO
+========================= */
+
+.todo{
+  grid-column:span 6;
 }
 
 .todo-input{
-  margin:0 15px 8px;
   display:flex;
-  border:1px solid #e0e3e8;
-  border-radius:12px;
+  margin:9px 13px;
+  border:1px solid #e1e4e8;
+  border-radius:10px;
   overflow:hidden;
 }
 
 .todo-input input{
   flex:1;
   border:0;
-  outline:none;
-  padding:9px 11px;
-  font-size:12px;
+  outline:0;
+  padding:9px 10px;
+  font-size:10px;
 }
 
 .todo-input button{
   border:0;
+  background:#f0f2f5;
   padding:0 13px;
-  cursor:pointer;
 }
 
 .todo-item{
   display:flex;
   align-items:center;
-  gap:8px;
-  padding:10px 15px;
-  border-top:1px solid #eef0f3;
-  font-size:12px;
+  gap:7px;
+  padding:8px 14px;
+  border-top:1px solid #f0f1f3;
+  font-size:10px;
+}
+
+.todo-item input{
+  accent-color:#4b82c0;
 }
 
 .todo-item.done span{
   text-decoration:line-through;
-  color:#a2a7ae;
+  color:#a0a5ac;
 }
 
-.language-row{
-  display:grid;
-  grid-template-columns:32px 1fr auto;
-  align-items:center;
-  gap:8px;
-  padding:12px 15px;
-  border-top:1px solid #eef0f3;
-}
+/* =========================
+   MOBILE
+========================= */
 
-.language-row strong{
-  display:block;
-  font-size:12px;
-}
+@media(max-width:950px){
 
-.language-row small{
-  color:#7e8691;
-  font-size:9px;
-}
+  .weather,
+  .transport,
+  .calendar,
+  .roster,
+  .today,
+  .todo{
+    grid-column:span 6;
+  }
 
-.progress{
-  font-size:11px;
-  color:#5277a0;
-}
-
-footer{
-  display:flex;
-  justify-content:space-between;
-  padding:13px 4px;
-  color:#89909b;
-  font-size:10px;
-}
-
-@media(max-width:1000px){
-  .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .weather,.forecast,.schedule,.roster,
-  .transport,.todo,.language{grid-column:span 3}
 }
 
 @media(max-width:650px){
-  .nav{display:none}
-  .dashboard{padding:10px}
-  .grid{display:flex;flex-direction:column}
-  .time{font-size:52px}
-  footer{flex-direction:column;gap:5px}
+
+  .topbar{
+    padding:0 13px;
+  }
+
+  .nav{
+    display:none;
+  }
+
+  .dashboard{
+    padding:10px;
+  }
+
+  .time-card{
+    min-height:250px;
+    padding:24px 14px;
+  }
+
+  .time-top{
+    gap:15px;
+  }
+
+  .time-zone .time{
+    font-size:40px;
+  }
+
+  .time-zone .label{
+    font-size:11px;
+  }
+
+  .time-divider{
+    height:70px;
+  }
+
+  .grid{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .route-box{
+    grid-template-columns:1fr;
+  }
+
 }
 </style>
 </head>
@@ -368,232 +589,648 @@ footer{
 
   <div class="brand">
     <div class="brand-icon">✦</div>
-    Daily Command Center
+    Personal Dashboard
   </div>
 
   <nav class="nav">
-    <button class="active">Home</button>
-    <button>Calendar</button>
-    <button>Work</button>
-    <button>Settings</button>
+    <button class="active">首頁</button>
+    <button>日曆</button>
+    <button>工作</button>
+    <button>設定</button>
   </nav>
 
 </header>
 
+
 <main class="dashboard">
 
-<section class="hero">
-  <div class="eyebrow">TOKYO · TODAY</div>
-  <div class="greeting">こんにちは · Good afternoon</div>
-  <div class="time" id="clock">--:--</div>
-  <div class="date" id="date">Loading…</div>
-</section>
+<!-- =========================
+     TIME
+========================= -->
 
-<section class="calendar">
+<section class="time-card">
 
-  <div class="calendar-title">📅 CALENDAR</div>
+  <div class="time-top">
 
-  <div class="calendar-tabs">
-    <button class="active">ALL</button>
-    <button>🍎 APPLE</button>
-    <button>🟢 GOOGLE</button>
+    <div class="time-zone">
+
+      <div class="label">🇯🇵 日本</div>
+
+      <div class="time" id="tokyo">
+        --:--
+      </div>
+
+      <div class="city">
+        東京 · Tokyo
+      </div>
+
+    </div>
+
+
+    <div class="time-divider"></div>
+
+
+    <div class="time-zone">
+
+      <div class="label">🇭🇰 香港</div>
+
+      <div class="time" id="hongkong">
+        --:--
+      </div>
+
+      <div class="city">
+        香港 · Hong Kong
+      </div>
+
+    </div>
+
   </div>
 
-  <div class="calendar-status">
-    尚未連接 Calendar
+
+  <div class="secondary-times">
+
+    🇺🇸 DFW <span id="dfw">--:--</span>
+
+    &nbsp; · &nbsp;
+
+    🇩🇪 FRA <span id="fra">--:--</span>
+
+  </div>
+
+
+  <div class="date" id="date">
+    --
   </div>
 
 </section>
+
 
 <div class="grid">
+
+
+<!-- =========================
+     WEATHER
+========================= -->
 
 <section class="card weather">
 
   <div class="card-head">
-    <div class="card-title">☼ WEATHER</div>
-  </div>
 
-  <div class="weather-row">
-    <div>
-      <div class="location">🇯🇵 Shin-Urayasu</div>
-      <div class="temperature">--°</div>
-      <div class="weather-info">尚未連接即時天氣</div>
+    <div class="card-title">
+      🌤️ 天氣
     </div>
-    <div class="weather-icon">🌤️</div>
+
+    <button class="refresh"
+      onclick="refreshMessage(this)">
+      ↻
+    </button>
+
   </div>
 
-  <div class="weather-row">
-    <div>
-      <div class="location">🇭🇰 Hong Kong</div>
-      <div class="temperature">--°</div>
-      <div class="weather-info">尚未連接即時天氣</div>
+
+  <div class="weather-cities">
+
+    <div class="weather-city">
+
+      <div class="place">
+        🇯🇵 新浦安
+      </div>
+
+      <div class="weather-main">
+
+        <div class="weather-temp">
+          --°
+        </div>
+
+        <div class="weather-icon">
+          🌤️
+        </div>
+
+      </div>
+
+      <div class="weather-detail">
+        尚未連接即時天氣
+      </div>
+
     </div>
-    <div class="weather-icon">🌤️</div>
+
+
+    <div class="weather-city">
+
+      <div class="place">
+        🇭🇰 香港
+      </div>
+
+      <div class="weather-main">
+
+        <div class="weather-temp">
+          --°
+        </div>
+
+        <div class="weather-icon">
+          🌤️
+        </div>
+
+      </div>
+
+      <div class="weather-detail">
+        尚未連接即時天氣
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="forecast-mini">
+    新浦安 · 9日預報　尚未連接 Weather API
   </div>
 
 </section>
 
-<section class="card forecast">
 
-  <div class="card-head">
-    <div class="card-title">▦ 9-DAY · SHIN-URAYASU</div>
-  </div>
-
-  <div class="empty">
-    <strong>尚未連接天氣 API</strong>
-    <span>連接後會顯示未來 9 日預報</span>
-  </div>
-
-</section>
-
-<section class="card schedule">
-
-  <div class="card-head">
-    <div class="card-title">▣ TODAY'S SCHEDULE</div>
-  </div>
-
-  <div class="empty">
-    <strong>Calendar 尚未連接</strong>
-    <span>你的私人行程唔會儲存在 Public GitHub</span>
-    <button class="connect">Connect Calendar</button>
-  </div>
-
-</section>
-
-<section class="card roster">
-
-  <div class="card-head">
-    <div class="card-title">✈️ WORK / ROSTER</div>
-  </div>
-
-  <div class="empty">
-    <strong>尚未加入 Roster</strong>
-    <span>可稍後手動輸入或加入正式 integration</span>
-  </div>
-
-</section>
+<!-- =========================
+     TRANSPORT
+========================= -->
 
 <section class="card transport">
 
   <div class="card-head">
-    <div class="card-title">🚆 新浦安 → 羽田</div>
+
+    <div class="card-title">
+      🚆 交通 · 新浦安站
+    </div>
+
+    <button class="refresh"
+      onclick="refreshMessage(this)">
+      ↻
+    </button>
+
   </div>
 
-  <div class="empty">
-    <strong>尚未連接交通 API</strong>
-    <span>連接後顯示即時班次</span>
+
+  <div class="transport-controls">
+
+    <button class="active">
+      羽田 HND
+    </button>
+
+    <button>
+      成田 NRT
+    </button>
+
+    <button>
+      青砥 Aoto
+    </button>
+
+    <div class="direction">
+      新浦安 ↔ 羽田
+    </div>
+
+  </div>
+
+
+  <div class="route-box">
+
+    <div class="route">
+
+      <div class="route-time">
+        --:--
+      </div>
+
+      <div class="route-name">
+        尚未連接即時資料
+      </div>
+
+      <div class="route-info">
+        去程
+      </div>
+
+    </div>
+
+
+    <div class="route">
+
+      <div class="route-time">
+        --:--
+      </div>
+
+      <div class="route-name">
+        尚未連接即時資料
+      </div>
+
+      <div class="route-info">
+        去程
+      </div>
+
+    </div>
+
+
+    <div class="route">
+
+      <div class="route-time">
+        --:--
+      </div>
+
+      <div class="route-name">
+        尚未連接即時資料
+      </div>
+
+      <div class="route-info">
+        回程
+      </div>
+
+    </div>
+
   </div>
 
 </section>
+
+
+<!-- =========================
+     CALENDAR
+========================= -->
+
+<section class="card calendar">
+
+  <div class="card-head">
+
+    <div class="card-title">
+      📅 日曆
+    </div>
+
+    <button class="refresh"
+      onclick="refreshMessage(this)">
+      ↻
+    </button>
+
+  </div>
+
+
+  <div class="calendar-tabs">
+
+    <button class="active">
+      全部
+    </button>
+
+    <button>
+      🍎 Apple
+    </button>
+
+    <button>
+      🟢 Google
+    </button>
+
+  </div>
+
+
+  <div class="empty">
+
+    <strong>
+      尚未連接日曆
+    </strong>
+
+    <span>
+      Calendar integration 將於下一階段加入
+    </span>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     ROSTER
+========================= -->
+
+<section class="card roster">
+
+  <div class="card-head">
+
+    <div class="card-title">
+      ✈️ 工作／Roster
+    </div>
+
+    <button class="refresh"
+      onclick="refreshMessage(this)">
+      ↻
+    </button>
+
+  </div>
+
+
+  <div class="roster-main">
+
+    <div class="roster-today">
+
+      <div class="roster-label">
+        今日
+      </div>
+
+      <div class="roster-duty">
+        尚未設定
+      </div>
+
+      <div class="roster-time">
+        可稍後加入 Roster
+      </div>
+
+    </div>
+
+
+    <div class="roster-row">
+
+      <span>下一個</span>
+
+      <span>
+        尚未設定
+      </span>
+
+      <span class="tag">
+        —
+      </span>
+
+    </div>
+
+
+    <div class="roster-row">
+
+      <span>航班</span>
+
+      <span>
+        尚未設定
+      </span>
+
+      <span class="tag">
+        —
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     TODAY'S SCHEDULE
+========================= -->
+
+<section class="card today">
+
+  <div class="card-head">
+
+    <div class="card-title">
+      📅 今日行程
+    </div>
+
+    <button class="refresh"
+      onclick="refreshMessage(this)">
+      ↻
+    </button>
+
+  </div>
+
+
+  <div class="empty">
+
+    <strong>
+      尚未連接 Calendar
+    </strong>
+
+    <span>
+      Apple / Google Calendar 連接後會顯示今日行程
+    </span>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     TODO
+========================= -->
 
 <section class="card todo">
 
   <div class="card-head">
-    <div class="card-title">☷ TO-DO</div>
+
+    <div class="card-title">
+      ☑️ 待辦事項
+    </div>
+
   </div>
+
 
   <div class="todo-input">
-    <input id="todoInput" placeholder="加新事項…">
-    <button onclick="addTodo()">＋</button>
+
+    <input
+      id="todoInput"
+      placeholder="新增待辦事項…"
+      onkeydown="handleTodoKey(event)"
+    >
+
+    <button onclick="addTodo()">
+      ＋
+    </button>
+
   </div>
 
 </section>
 
-<section class="card language">
-
-  <div class="card-head">
-    <div class="card-title">文 LANGUAGE</div>
-  </div>
-
-  <div class="language-row">
-    <span>🇯🇵</span>
-    <div>
-      <strong>Japanese</strong>
-      <small>尚未設定</small>
-    </div>
-    <span class="progress">—</span>
-  </div>
-
-  <div class="language-row">
-    <span>🇹🇭</span>
-    <div>
-      <strong>Thai</strong>
-      <small>尚未設定</small>
-    </div>
-    <span class="progress">—</span>
-  </div>
-
-  <div class="language-row">
-    <span>🇰🇷</span>
-    <div>
-      <strong>Korean</strong>
-      <small>尚未設定</small>
-    </div>
-    <span class="progress">—</span>
-  </div>
-
-</section>
 
 </div>
 
-<footer>
-  <span>● Dashboard V1.1 · Secure Prototype</span>
-  <span>No private calendar data stored in GitHub</span>
-</footer>
-
 </main>
 
+
 <script>
+
+/* =========================
+   WORLD CLOCK
+========================= */
+
+function formatTime(timeZone){
+
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      timeZone:timeZone,
+      hour:"2-digit",
+      minute:"2-digit",
+      hour12:false
+    }
+  ).format(new Date());
+
+}
+
 
 function updateClock(){
 
   const now = new Date();
 
-  document.getElementById("clock").textContent =
-    now.toLocaleTimeString("en-GB",{
-      hour:"2-digit",
-      minute:"2-digit"
-    });
+
+  document.getElementById("tokyo").textContent =
+    formatTime("Asia/Tokyo");
+
+
+  document.getElementById("hongkong").textContent =
+    formatTime("Asia/Hong_Kong");
+
+
+  document.getElementById("dfw").textContent =
+    formatTime("America/Chicago");
+
+
+  document.getElementById("fra").textContent =
+    formatTime("Europe/Berlin");
+
 
   document.getElementById("date").textContent =
-    now.toLocaleDateString("en-US",{
-      weekday:"long",
-      month:"long",
-      day:"numeric",
-      year:"numeric"
-    });
+    new Intl.DateTimeFormat(
+      "zh-Hant-TW",
+      {
+        timeZone:"Asia/Tokyo",
+        year:"numeric",
+        month:"long",
+        day:"numeric",
+        weekday:"long"
+      }
+    ).format(now);
+
 }
 
+
 updateClock();
+
 setInterval(updateClock,1000);
 
 
+/* =========================
+   TODO
+========================= */
+
 function addTodo(){
 
-  const input=document.getElementById("todoInput");
-  const text=input.value.trim();
+  const input =
+    document.getElementById("todoInput");
 
-  if(!text)return;
+  const text =
+    input.value.trim();
 
-  const item=document.createElement("div");
+  if(!text){
+    return;
+  }
 
-  item.className="todo-item";
 
-  item.innerHTML=
-    `<input type="checkbox">
-     <span>${text}</span>`;
+  const item =
+    document.createElement("div");
+
+  item.className =
+    "todo-item";
+
+
+  item.innerHTML =
+    `
+      <input type="checkbox">
+      <span>${escapeHtml(text)}</span>
+    `;
+
+
+  item.querySelector("input")
+    .addEventListener(
+      "change",
+      function(){
+
+        item.classList.toggle(
+          "done",
+          this.checked
+        );
+
+      }
+    );
+
+
+  document
+    .querySelector(".todo")
+    .appendChild(item);
+
 
   input.value="";
 
-  item.querySelector("input").addEventListener(
-    "change",
-    function(){
-      item.classList.toggle("done",this.checked);
-    }
-  );
-
-  document.querySelector(".todo").appendChild(item);
 }
+
+
+function handleTodoKey(event){
+
+  if(event.key==="Enter"){
+    addTodo();
+  }
+
+}
+
+
+function escapeHtml(text){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent=text;
+
+  return div.innerHTML;
+
+}
+
+
+/* =========================
+   REFRESH PLACEHOLDER
+========================= */
+
+function refreshMessage(button){
+
+  const original=button.textContent;
+
+  button.textContent="…";
+
+  setTimeout(function(){
+
+    button.textContent=original;
+
+  },700);
+
+}
+
+
+/* =========================
+   TRANSPORT TABS
+========================= */
+
+document
+  .querySelectorAll(".transport-controls button")
+  .forEach(function(button){
+
+    button.addEventListener(
+      "click",
+      function(){
+
+        document
+          .querySelectorAll(".transport-controls button")
+          .forEach(function(btn){
+            btn.classList.remove("active");
+          });
+
+        button.classList.add("active");
+
+        const direction =
+          document.querySelector(".direction");
+
+        direction.textContent =
+          "新浦安 ↔ " + button.textContent;
+
+      }
+    );
+
+  });
 
 </script>
 
