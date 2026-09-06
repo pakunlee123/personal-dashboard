@@ -1,526 +1,506 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Personal Dashboard</title>
 
 <style>
 *{box-sizing:border-box}
 
-:root{
-  --bg:#f4f5f7;
-  --card:#ffffff;
-  --line:#e5e7eb;
-  --text:#20242b;
-  --muted:#7b838f;
-  --soft:#f1f3f6;
-}
-
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,
-  "SF Pro Display","SF Pro Text",
-  "Noto Sans TC",sans-serif;
+  background:#f4f5f7;
+  color:#20242b;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
+  "Noto Sans TC",sans-serif
 }
 
-button,input{
-  font:inherit;
-}
+button,input,select{font:inherit}
+button{cursor:pointer}
 
-button{
-  cursor:pointer;
-}
+/* ===== TOP ===== */
 
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-  height:62px;
+.top{
+  height:58px;
   padding:0 28px;
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  background:rgba(255,255,255,.9);
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(18px);
   position:sticky;
   top:0;
-  z-index:20;
+  z-index:9;
+  backdrop-filter:blur(18px)
 }
 
 .brand{
+  font-weight:650;
   display:flex;
   align-items:center;
-  gap:10px;
-  font-size:15px;
-  font-weight:650;
+  gap:10px
 }
 
-.brand-icon{
+.logo{
   width:30px;
   height:30px;
   border-radius:9px;
+  background:linear-gradient(135deg,#438bdc,#7168d7);
+  color:white;
   display:grid;
-  place-items:center;
-  color:#fff;
-  background:linear-gradient(135deg,#438bdc,#7167d7);
+  place-items:center
 }
 
 .nav{
   display:flex;
-  gap:5px;
+  gap:4px
 }
 
 .nav button{
   border:0;
   background:transparent;
-  color:#7b838f;
   padding:8px 13px;
   border-radius:9px;
-  font-size:11px;
+  color:#737b87;
+  font-size:11px
 }
 
-.nav button.active{
+.nav button:hover{
+  background:#f0f2f5
+}
+
+.nav .on{
   background:#e9ecf1;
-  color:#20242b;
+  color:#20242b
 }
 
-/* =========================
-   MAIN
-========================= */
+/* ===== MAIN ===== */
 
-.dashboard{
+.wrap{
   max-width:1450px;
   margin:auto;
-  padding:18px 24px 30px;
+  padding:14px 24px 28px
 }
 
-/* =========================
-   WORLD CLOCK
-========================= */
+/* ===== CLOCK ===== */
 
-.time-card{
-  min-height:285px;
-  border-radius:25px;
-  padding:32px 44px 26px;
+.clock{
+  min-height:205px;
+  border-radius:24px;
+  background:linear-gradient(
+    120deg,
+    #3d8cdb,
+    #536fda 55%,
+    #7168d7
+  );
   color:white;
-
-  background:
-    linear-gradient(
-      120deg,
-      #3d8cdb 0%,
-      #536fda 55%,
-      #7168d7 100%
-    );
-
-  box-shadow:
-    0 16px 40px rgba(53,87,160,.18);
-
+  padding:18px 38px;
   display:flex;
   flex-direction:column;
   justify-content:center;
+  box-shadow:0 14px 35px #3557a025
 }
 
-.time-top{
+.clockrow{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:42px;
+  gap:48px
 }
 
-.time-zone{
+.zone{
   flex:1;
-  text-align:center;
+  text-align:center
 }
 
-.time-zone .label{
-  font-size:14px;
-  opacity:.82;
-  letter-spacing:.12em;
-  font-weight:650;
+.label{
+  font-size:15px;
+  font-weight:650
 }
 
-.time-zone .time{
-  margin-top:9px;
-  font-size:64px;
-  line-height:1;
-  font-weight:320;
-  letter-spacing:-.055em;
+.time{
+  font-size:84px;
+  line-height:.95;
+  margin-top:4px;
+  font-weight:300;
+  letter-spacing:-.06em
 }
 
-.time-zone .city{
-  margin-top:8px;
+.city{
   font-size:12px;
-  opacity:.76;
+  opacity:.8;
+  margin-top:7px
 }
 
-.time-divider{
+.divider{
   width:1px;
-  height:100px;
-  background:rgba(255,255,255,.25);
+  height:88px;
+  background:#ffffff40
 }
 
-.secondary-times{
+.smalltimes{
   text-align:center;
-  font-size:12px;
-  opacity:.76;
-  margin-top:20px;
+  font-size:13px;
+  margin-top:13px;
+  opacity:.88
 }
 
 .date{
   text-align:center;
   font-size:13px;
-  margin-top:8px;
-  opacity:.92;
+  margin-top:5px
 }
 
-/* =========================
-   GRID
-========================= */
+/* ===== GRID ===== */
 
 .grid{
-  margin-top:13px;
   display:grid;
-  grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-columns:repeat(12,1fr);
   gap:13px;
+  margin-top:13px
 }
 
 .card{
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:19px;
+  background:#fff;
+  border:1px solid #e4e6ea;
+  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 7px 22px rgba(30,38,52,.045);
+  box-shadow:0 6px 20px #1e26340a
 }
 
-.card-head{
-  height:47px;
-  padding:0 16px;
+.head{
+  height:45px;
+  padding:0 15px;
+  border-bottom:1px solid #f0f1f3;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  border-bottom:1px solid #f0f1f3;
+  justify-content:space-between
 }
 
-.card-title{
+.title{
   font-size:10px;
   letter-spacing:.12em;
   font-weight:700;
-  color:#737b87;
+  color:#737b87
 }
 
 .refresh{
-  width:27px;
-  height:27px;
-  padding:0;
   border:0;
+  background:#f0f2f5;
+  color:#707884;
   border-radius:8px;
-  background:var(--soft);
-  color:#737b87;
-  font-size:14px;
+  width:27px;
+  height:27px
 }
 
-/* =========================
-   WEATHER
-========================= */
+.refresh:hover{
+  background:#e7e9ed
+}
+
+/* ===== WEATHER ===== */
 
 .weather{
-  grid-column:span 4;
+  grid-column:span 4
 }
 
-.weather-cities{
+.weatherbody{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:9px;
+  gap:8px;
+  padding:9px
+}
+
+.wcity{
   padding:10px;
+  background:#f2f4f7;
+  border-radius:13px
 }
 
-.weather-city{
-  padding:12px;
-  background:#f3f5f8;
-  border-radius:14px;
+.wcity b{
+  font-size:11px
 }
 
-.place{
-  font-size:11px;
-  font-weight:650;
-}
-
-.weather-main{
+.wmain{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  margin-top:5px;
+  align-items:center;
+  margin-top:4px
 }
 
-.weather-temp{
-  font-size:29px;
-  font-weight:600;
+.temp{
+  font-size:28px;
+  font-weight:600
 }
 
-.weather-icon{
-  font-size:24px;
-}
-
-.weather-detail{
-  margin-top:3px;
+.wd{
   font-size:9px;
-  color:var(--muted);
+  color:#7d8590
 }
 
-.forecast-mini{
-  padding:0 12px 11px;
+.forecast{
+  padding:0 11px 9px;
   font-size:9px;
-  color:var(--muted);
+  color:#7d8590
 }
 
-/* =========================
-   TRANSPORT
-========================= */
+/* ===== TRANSPORT ===== */
 
 .transport{
-  grid-column:span 8;
+  grid-column:span 8
 }
 
-.transport-controls{
+.controls{
   display:flex;
   align-items:center;
   gap:5px;
-  padding:9px 13px;
+  padding:8px 12px 7px
 }
 
-.transport-controls button{
+.controls button{
   border:0;
   background:#f0f2f5;
   color:#747b86;
   border-radius:8px;
-  padding:6px 11px;
-  font-size:10px;
+  padding:6px 10px;
+  font-size:10px
 }
 
-.transport-controls button.active{
+.controls button:hover{
+  background:#e5e8ed
+}
+
+.controls .on{
   background:#dfe9f7;
   color:#37689e;
-  font-weight:650;
+  font-weight:650
 }
 
 .direction{
   margin-left:auto;
-  color:#7d8490;
   font-size:10px;
+  color:#7d8490
 }
 
-.route-box{
+.routes{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:8px;
-  padding:0 13px 12px;
+  gap:7px;
+  padding:0 12px 11px
 }
 
 .route{
-  padding:10px;
-  border-radius:12px;
+  padding:9px;
   background:#f3f5f8;
+  border-radius:11px
 }
 
-.route-time{
+.rt{
   font-size:15px;
-  font-weight:650;
+  font-weight:650
 }
 
-.route-name{
-  margin-top:3px;
+.rn{
   font-size:10px;
+  margin-top:3px
 }
 
-.route-info{
-  margin-top:3px;
-  color:#7d8490;
+.ri{
   font-size:9px;
+  color:#7d8490;
+  margin-top:3px
 }
 
-/* =========================
-   CALENDAR
-========================= */
+/* ===== CALENDAR ===== */
 
 .calendar{
-  grid-column:span 7;
+  grid-column:span 7
 }
 
-.calendar-tabs{
-  display:flex;
-  gap:5px;
-  padding:9px 13px;
+.tabs{
+  padding:8px 12px
 }
 
-.calendar-tabs button{
+.tabs button{
   border:0;
   background:#f0f2f5;
-  color:#747b86;
   padding:6px 10px;
   border-radius:8px;
   font-size:9px;
+  margin-right:4px
 }
 
-.calendar-tabs button.active{
+.tabs button:hover{
+  background:#e6e9ed
+}
+
+.tabs .on{
   background:#dfe9f7;
-  color:#37689e;
+  color:#37689e
 }
 
 .empty{
-  min-height:94px;
+  height:88px;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   gap:6px;
   color:#8a919c;
-  font-size:10px;
-  padding:12px;
+  font-size:10px
 }
 
-.empty strong{
-  color:#555d68;
-  font-size:11px;
+.empty b{
+  color:#555d68
 }
 
-/* =========================
-   ROSTER
-========================= */
+/* ===== ROSTER ===== */
 
 .roster{
-  grid-column:span 5;
+  grid-column:span 5
 }
 
-.roster-main{
-  padding:11px 13px;
+.rosterbody{
+  padding:10px 12px
 }
 
-.roster-today{
-  padding:11px;
+.todaybox{
   background:#f3f5f8;
-  border-radius:13px;
-  margin-bottom:7px;
+  border-radius:12px;
+  padding:10px
 }
 
-.roster-label{
+.rlabel{
   font-size:8px;
-  color:#8a919b;
-  letter-spacing:.1em;
+  color:#8a919b
 }
 
-.roster-duty{
-  margin-top:4px;
+.duty{
   font-size:18px;
   font-weight:650;
+  margin-top:3px
 }
 
-.roster-time{
-  margin-top:3px;
-  color:#747c87;
+.rtime{
   font-size:9px;
+  color:#747c87
 }
 
-.roster-row{
+.rrow{
   display:grid;
-  grid-template-columns:60px 1fr auto;
-  align-items:center;
-  gap:8px;
+  grid-template-columns:58px 1fr auto;
   padding:7px 3px;
   border-top:1px solid #f0f1f3;
-  font-size:10px;
+  font-size:10px
 }
 
 .tag{
   background:#eef0f3;
   border-radius:6px;
   padding:3px 6px;
-  font-size:8px;
-  color:#727985;
+  font-size:8px
 }
 
-/* =========================
-   TODAY SCHEDULE
-========================= */
+/* ===== TODAY ===== */
 
 .today{
-  grid-column:span 6;
+  grid-column:span 6
 }
 
-.event-row{
-  display:grid;
-  grid-template-columns:55px 1fr auto;
-  gap:8px;
-  align-items:center;
-  padding:9px 14px;
-  border-top:1px solid #f0f1f3;
-  font-size:10px;
-}
-
-.event-time{
-  font-weight:650;
-}
-
-.event-source{
-  font-size:8px;
-  color:#858c97;
-}
-
-/* =========================
-   TODO
-========================= */
+/* ===== TODO ===== */
 
 .todo{
-  grid-column:span 6;
+  grid-column:span 6
 }
 
-.todo-input{
+.todoadd{
   display:flex;
-  margin:9px 13px;
+  margin:9px 12px 7px;
   border:1px solid #e1e4e8;
   border-radius:10px;
-  overflow:hidden;
+  overflow:hidden
 }
 
-.todo-input input{
+.todoadd input{
   flex:1;
   border:0;
   outline:0;
   padding:9px 10px;
-  font-size:10px;
+  font-size:10px
 }
 
-.todo-input button{
+.todoadd select{
   border:0;
-  background:#f0f2f5;
-  padding:0 13px;
+  border-left:1px solid #e1e4e8;
+  padding:0 5px;
+  font-size:9px;
+  background:white
 }
 
-.todo-item{
-  display:flex;
-  align-items:center;
+.todoadd button{
+  border:0;
+  background:#eef2f7;
+  color:#4381c7;
+  padding:0 13px
+}
+
+.item{
+  display:grid;
+  grid-template-columns:20px 1fr auto auto;
   gap:7px;
-  padding:8px 14px;
+  align-items:center;
+  padding:8px 12px;
   border-top:1px solid #f0f1f3;
-  font-size:10px;
+  font-size:10px
 }
 
-.todo-item input{
-  accent-color:#4b82c0;
-}
-
-.todo-item.done span{
+.item.done span{
   text-decoration:line-through;
-  color:#a0a5ac;
+  color:#a0a5ac
 }
 
-/* =========================
-   MOBILE
-========================= */
+.prio{
+  border:0;
+  border-radius:7px;
+  padding:4px 6px;
+  font-size:8px
+}
+
+.high{
+  background:#fde9e7;
+  color:#b94a42
+}
+
+.normal{
+  background:#e9f1fb;
+  color:#4779ad
+}
+
+.low{
+  background:#eef5ee;
+  color:#5e8960
+}
+
+.del{
+  border:0;
+  background:transparent;
+  color:#9299a2;
+  font-size:13px
+}
+
+.del:hover{
+  color:#d34d4d
+}
+
+.edit{
+  width:100%;
+  border:1px solid #ccd4df;
+  border-radius:6px;
+  padding:4px 6px;
+  font-size:10px
+}
+
+/* ===== RESPONSIVE ===== */
 
 @media(max-width:950px){
 
@@ -530,53 +510,53 @@ button{
   .roster,
   .today,
   .todo{
-    grid-column:span 6;
+    grid-column:span 6
   }
 
 }
 
 @media(max-width:650px){
 
-  .topbar{
-    padding:0 13px;
+  .top{
+    padding:0 13px
   }
 
   .nav{
-    display:none;
+    display:none
   }
 
-  .dashboard{
-    padding:10px;
+  .wrap{
+    padding:9px
   }
 
-  .time-card{
-    min-height:250px;
-    padding:24px 14px;
+  .clock{
+    min-height:220px;
+    padding:20px 12px
   }
 
-  .time-top{
-    gap:15px;
+  .clockrow{
+    gap:12px
   }
 
-  .time-zone .time{
-    font-size:40px;
+  .time{
+    font-size:46px
   }
 
-  .time-zone .label{
-    font-size:11px;
+  .label{
+    font-size:11px
   }
 
-  .time-divider{
-    height:70px;
+  .divider{
+    height:70px
   }
 
   .grid{
     display:flex;
-    flex-direction:column;
+    flex-direction:column
   }
 
-  .route-box{
-    grid-template-columns:1fr;
+  .routes{
+    grid-template-columns:1fr
   }
 
 }
@@ -585,38 +565,36 @@ button{
 
 <body>
 
-<header class="topbar">
+<header class="top">
 
   <div class="brand">
-    <div class="brand-icon">✦</div>
+    <div class="logo">✦</div>
     Personal Dashboard
   </div>
 
   <nav class="nav">
-    <button class="active">首頁</button>
-    <button>日曆</button>
-    <button>工作</button>
-    <button>設定</button>
+    <button class="on" data-section="home">首頁</button>
+    <button data-section="calendar">日曆</button>
+    <button data-section="work">工作</button>
+    <button data-section="settings">設定</button>
   </nav>
 
 </header>
 
 
-<main class="dashboard">
+<main class="wrap">
 
-<!-- =========================
-     TIME
-========================= -->
+<!-- ================= CLOCK ================= -->
 
-<section class="time-card">
+<section class="clock" id="home">
 
-  <div class="time-top">
+  <div class="clockrow">
 
-    <div class="time-zone">
+    <div class="zone">
 
       <div class="label">🇯🇵 日本</div>
 
-      <div class="time" id="tokyo">
+      <div class="time" id="jp">
         --:--
       </div>
 
@@ -627,14 +605,14 @@ button{
     </div>
 
 
-    <div class="time-divider"></div>
+    <div class="divider"></div>
 
 
-    <div class="time-zone">
+    <div class="zone">
 
       <div class="label">🇭🇰 香港</div>
 
-      <div class="time" id="hongkong">
+      <div class="time" id="hk">
         --:--
       </div>
 
@@ -647,13 +625,15 @@ button{
   </div>
 
 
-  <div class="secondary-times">
+  <div class="smalltimes">
 
-    🇺🇸 DFW <span id="dfw">--:--</span>
+    🇺🇸 DFW
+    <span id="dfw">--:--</span>
 
-    &nbsp; · &nbsp;
+   　·　
 
-    🇩🇪 FRA <span id="fra">--:--</span>
+    🇩🇪 FRA
+    <span id="fra">--:--</span>
 
   </div>
 
@@ -667,73 +647,67 @@ button{
 
 <div class="grid">
 
-
-<!-- =========================
-     WEATHER
-========================= -->
+<!-- ================= WEATHER ================= -->
 
 <section class="card weather">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
+    <div class="title">
       🌤️ 天氣
     </div>
 
-    <button class="refresh"
-      onclick="refreshMessage(this)">
+    <button
+      class="refresh"
+      onclick="refresh(this)">
       ↻
     </button>
 
   </div>
 
 
-  <div class="weather-cities">
+  <div class="weatherbody">
 
-    <div class="weather-city">
+    <div class="wcity">
 
-      <div class="place">
-        🇯🇵 新浦安
-      </div>
+      <b>🇯🇵 新浦安</b>
 
-      <div class="weather-main">
+      <div class="wmain">
 
-        <div class="weather-temp">
+        <span class="temp">
           --°
-        </div>
+        </span>
 
-        <div class="weather-icon">
+        <span>
           🌤️
-        </div>
+        </span>
 
       </div>
 
-      <div class="weather-detail">
+      <div class="wd">
         尚未連接即時天氣
       </div>
 
     </div>
 
 
-    <div class="weather-city">
+    <div class="wcity">
 
-      <div class="place">
-        🇭🇰 香港
-      </div>
+      <b>🇭🇰 香港</b>
 
-      <div class="weather-main">
+      <div class="wmain">
 
-        <div class="weather-temp">
+        <span class="temp">
           --°
-        </div>
+        </span>
 
-        <div class="weather-icon">
+        <span>
           🌤️
-        </div>
+        </span>
 
       </div>
 
-      <div class="weather-detail">
+      <div class="wd">
         尚未連接即時天氣
       </div>
 
@@ -742,102 +716,128 @@ button{
   </div>
 
 
-  <div class="forecast-mini">
+  <div class="forecast">
     新浦安 · 9日預報　尚未連接 Weather API
   </div>
 
 </section>
 
 
-<!-- =========================
-     TRANSPORT
-========================= -->
+<!-- ================= TRANSPORT ================= -->
 
 <section class="card transport">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
+    <div class="title">
       🚆 交通 · 新浦安站
     </div>
 
-    <button class="refresh"
-      onclick="refreshMessage(this)">
+    <button
+      class="refresh"
+      onclick="refresh(this)">
       ↻
     </button>
 
   </div>
 
 
-  <div class="transport-controls">
+  <div class="controls">
 
-    <button class="active">
+    <button
+      class="on"
+      data-d="羽田 HND">
       羽田 HND
     </button>
 
-    <button>
+    <button
+      data-d="成田 NRT">
       成田 NRT
     </button>
 
-    <button>
+    <button
+      data-d="青砥 Aoto">
       青砥 Aoto
     </button>
 
-    <div class="direction">
-      新浦安 ↔ 羽田
-    </div>
+
+    <span
+      class="direction"
+      id="dir">
+
+      新浦安 ↔ 羽田 HND
+
+    </span>
 
   </div>
 
 
-  <div class="route-box">
+  <div class="routes">
+
+    <!-- 去程 -->
 
     <div class="route">
 
-      <div class="route-time">
+      <div class="rt">
         --:--
       </div>
 
-      <div class="route-name">
-        尚未連接即時資料
+      <div
+        class="rn"
+        id="go">
+
+        新浦安 → 羽田
+
       </div>
 
-      <div class="route-info">
-        去程
+      <div class="ri">
+        去程 · 尚未連接
       </div>
 
     </div>
 
 
+    <!-- 回程 -->
+
     <div class="route">
 
-      <div class="route-time">
+      <div class="rt">
         --:--
       </div>
 
-      <div class="route-name">
-        尚未連接即時資料
+      <div
+        class="rn"
+        id="back">
+
+        羽田 → 新浦安
+
       </div>
 
-      <div class="route-info">
-        去程
+      <div class="ri">
+        回程 · 尚未連接
       </div>
 
     </div>
 
 
+    <!-- 下一班 -->
+
     <div class="route">
 
-      <div class="route-time">
+      <div class="rt">
         --:--
       </div>
 
-      <div class="route-name">
-        尚未連接即時資料
+      <div
+        class="rn"
+        id="both">
+
+        新浦安 ↔ 羽田
+
       </div>
 
-      <div class="route-info">
-        回程
+      <div class="ri">
+        下一班 · 尚未連接
       </div>
 
     </div>
@@ -847,29 +847,30 @@ button{
 </section>
 
 
-<!-- =========================
-     CALENDAR
-========================= -->
+<!-- ================= CALENDAR ================= -->
 
-<section class="card calendar">
+<section
+  class="card calendar"
+  id="calendar">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
+    <div class="title">
       📅 日曆
     </div>
 
-    <button class="refresh"
-      onclick="refreshMessage(this)">
+    <button
+      class="refresh"
+      onclick="refresh(this)">
       ↻
     </button>
 
   </div>
 
 
-  <div class="calendar-tabs">
+  <div class="tabs">
 
-    <button class="active">
+    <button class="on">
       全部
     </button>
 
@@ -886,12 +887,12 @@ button{
 
   <div class="empty">
 
-    <strong>
+    <b>
       尚未連接日曆
-    </strong>
+    </b>
 
     <span>
-      Calendar integration 將於下一階段加入
+      Apple / Google Calendar integration
     </span>
 
   </div>
@@ -899,48 +900,51 @@ button{
 </section>
 
 
-<!-- =========================
-     ROSTER
-========================= -->
+<!-- ================= ROSTER ================= -->
 
-<section class="card roster">
+<section
+  class="card roster"
+  id="work">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
-      ✈️ 工作／Roster
+    <div class="title">
+      ✈️ 工作 / Roster
     </div>
 
-    <button class="refresh"
-      onclick="refreshMessage(this)">
+    <button
+      class="refresh"
+      onclick="refresh(this)">
       ↻
     </button>
 
   </div>
 
 
-  <div class="roster-main">
+  <div class="rosterbody">
 
-    <div class="roster-today">
+    <div class="todaybox">
 
-      <div class="roster-label">
+      <div class="rlabel">
         今日
       </div>
 
-      <div class="roster-duty">
+      <div class="duty">
         尚未設定
       </div>
 
-      <div class="roster-time">
+      <div class="rtime">
         可稍後加入 Roster
       </div>
 
     </div>
 
 
-    <div class="roster-row">
+    <div class="rrow">
 
-      <span>下一個</span>
+      <span>
+        下一個
+      </span>
 
       <span>
         尚未設定
@@ -953,9 +957,11 @@ button{
     </div>
 
 
-    <div class="roster-row">
+    <div class="rrow">
 
-      <span>航班</span>
+      <span>
+        航班
+      </span>
 
       <span>
         尚未設定
@@ -972,20 +978,19 @@ button{
 </section>
 
 
-<!-- =========================
-     TODAY'S SCHEDULE
-========================= -->
+<!-- ================= TODAY ================= -->
 
 <section class="card today">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
+    <div class="title">
       📅 今日行程
     </div>
 
-    <button class="refresh"
-      onclick="refreshMessage(this)">
+    <button
+      class="refresh"
+      onclick="refresh(this)">
       ↻
     </button>
 
@@ -994,12 +999,12 @@ button{
 
   <div class="empty">
 
-    <strong>
+    <b>
       尚未連接 Calendar
-    </strong>
+    </b>
 
     <span>
-      Apple / Google Calendar 連接後會顯示今日行程
+      連接後顯示今日行程
     </span>
 
   </div>
@@ -1007,37 +1012,60 @@ button{
 </section>
 
 
-<!-- =========================
-     TODO
-========================= -->
+<!-- ================= TODO ================= -->
 
 <section class="card todo">
 
-  <div class="card-head">
+  <div class="head">
 
-    <div class="card-title">
+    <div class="title">
       ☑️ 待辦事項
     </div>
+
+    <span
+      id="count"
+      style="font-size:9px;color:#858c97">
+
+      0 open
+
+    </span>
 
   </div>
 
 
-  <div class="todo-input">
+  <div class="todoadd">
 
     <input
-      id="todoInput"
-      placeholder="新增待辦事項…"
-      onkeydown="handleTodoKey(event)"
-    >
+      id="new"
+      placeholder="新增待辦事項…">
 
-    <button onclick="addTodo()">
+    <select id="level">
+
+      <option value="normal">
+        普通
+      </option>
+
+      <option value="high">
+        重要
+      </option>
+
+      <option value="low">
+        低
+      </option>
+
+    </select>
+
+
+    <button onclick="add()">
       ＋
     </button>
 
   </div>
 
-</section>
 
+  <div id="list"></div>
+
+</section>
 
 </div>
 
@@ -1046,44 +1074,38 @@ button{
 
 <script>
 
-/* =========================
+/* =========================================
    WORLD CLOCK
-========================= */
+========================================= */
 
-function formatTime(timeZone){
+const tz = (zone) => {
 
   return new Intl.DateTimeFormat(
     "en-GB",
     {
-      timeZone:timeZone,
+      timeZone:zone,
       hour:"2-digit",
       minute:"2-digit",
       hour12:false
     }
   ).format(new Date());
 
-}
+};
 
 
-function updateClock(){
+function clock(){
 
-  const now = new Date();
+  document.getElementById("jp").textContent =
+    tz("Asia/Tokyo");
 
-
-  document.getElementById("tokyo").textContent =
-    formatTime("Asia/Tokyo");
-
-
-  document.getElementById("hongkong").textContent =
-    formatTime("Asia/Hong_Kong");
-
+  document.getElementById("hk").textContent =
+    tz("Asia/Hong_Kong");
 
   document.getElementById("dfw").textContent =
-    formatTime("America/Chicago");
-
+    tz("America/Chicago");
 
   document.getElementById("fra").textContent =
-    formatTime("Europe/Berlin");
+    tz("Europe/Berlin");
 
 
   document.getElementById("date").textContent =
@@ -1096,141 +1118,448 @@ function updateClock(){
         day:"numeric",
         weekday:"long"
       }
-    ).format(now);
+    ).format(new Date());
 
 }
 
 
-updateClock();
+clock();
 
-setInterval(updateClock,1000);
-
-
-/* =========================
-   TODO
-========================= */
-
-function addTodo(){
-
-  const input =
-    document.getElementById("todoInput");
-
-  const text =
-    input.value.trim();
-
-  if(!text){
-    return;
-  }
+setInterval(clock,1000);
 
 
-  const item =
-    document.createElement("div");
+/* =========================================
+   REFRESH BUTTON
+========================================= */
 
-  item.className =
-    "todo-item";
+function refresh(button){
+
+  const oldText = button.textContent;
+
+  button.textContent = "…";
+
+  button.disabled = true;
+
+  setTimeout(() => {
+
+    button.textContent = oldText;
+
+    button.disabled = false;
+
+  },500);
+
+}
 
 
-  item.innerHTML =
-    `
-      <input type="checkbox">
-      <span>${escapeHtml(text)}</span>
-    `;
+/* =========================================
+   TRANSPORT
+========================================= */
+
+function destName(value){
+
+  return value
+    .replace(" HND","")
+    .replace(" NRT","")
+    .replace(" Aoto","");
+
+}
 
 
-  item.querySelector("input")
-    .addEventListener(
-      "change",
-      function(){
+document
+  .querySelectorAll(".controls button")
+  .forEach(button => {
 
-        item.classList.toggle(
-          "done",
-          this.checked
+    button.onclick = () => {
+
+      document
+        .querySelectorAll(".controls button")
+        .forEach(item => {
+
+          item.classList.remove("on");
+
+        });
+
+
+      button.classList.add("on");
+
+
+      const destination =
+        button.dataset.d;
+
+
+      const name =
+        destName(destination);
+
+
+      document.getElementById("dir")
+        .textContent =
+        "新浦安 ↔ " + destination;
+
+
+      document.getElementById("go")
+        .textContent =
+        "新浦安 → " + name;
+
+
+      document.getElementById("back")
+        .textContent =
+        name + " → 新浦安";
+
+
+      document.getElementById("both")
+        .textContent =
+        "新浦安 ↔ " + name;
+
+    };
+
+  });
+
+
+/* =========================================
+   TOP NAVIGATION
+========================================= */
+
+document
+  .querySelectorAll(".nav button")
+  .forEach(button => {
+
+    button.onclick = () => {
+
+      document
+        .querySelectorAll(".nav button")
+        .forEach(item =>
+          item.classList.remove("on")
+        );
+
+
+      button.classList.add("on");
+
+
+      const section =
+        button.dataset.section;
+
+
+      if(section === "calendar"){
+
+        document
+          .getElementById("calendar")
+          .scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+          });
+
+      }
+
+
+      if(section === "work"){
+
+        document
+          .getElementById("work")
+          .scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+          });
+
+      }
+
+
+      if(section === "home"){
+
+        window.scrollTo({
+          top:0,
+          behavior:"smooth"
+        });
+
+      }
+
+
+      if(section === "settings"){
+
+        alert(
+          "設定功能將於下一階段加入。"
         );
 
       }
-    );
 
-
-  document
-    .querySelector(".todo")
-    .appendChild(item);
-
-
-  input.value="";
-
-}
-
-
-function handleTodoKey(event){
-
-  if(event.key==="Enter"){
-    addTodo();
-  }
-
-}
-
-
-function escapeHtml(text){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent=text;
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================
-   REFRESH PLACEHOLDER
-========================= */
-
-function refreshMessage(button){
-
-  const original=button.textContent;
-
-  button.textContent="…";
-
-  setTimeout(function(){
-
-    button.textContent=original;
-
-  },700);
-
-}
-
-
-/* =========================
-   TRANSPORT TABS
-========================= */
-
-document
-  .querySelectorAll(".transport-controls button")
-  .forEach(function(button){
-
-    button.addEventListener(
-      "click",
-      function(){
-
-        document
-          .querySelectorAll(".transport-controls button")
-          .forEach(function(btn){
-            btn.classList.remove("active");
-          });
-
-        button.classList.add("active");
-
-        const direction =
-          document.querySelector(".direction");
-
-        direction.textContent =
-          "新浦安 ↔ " + button.textContent;
-
-      }
-    );
+    };
 
   });
+
+
+/* =========================================
+   TODO
+   LocalStorage
+========================================= */
+
+let todos =
+  JSON.parse(
+    localStorage.getItem("pdTodos") || "[]"
+  );
+
+
+function save(){
+
+  localStorage.setItem(
+    "pdTodos",
+    JSON.stringify(todos)
+  );
+
+  render();
+
+}
+
+
+function add(){
+
+  const input =
+    document.getElementById("new");
+
+  const priority =
+    document.getElementById("level");
+
+
+  const value =
+    input.value.trim();
+
+
+  if(!value){
+
+    input.focus();
+
+    return;
+
+  }
+
+
+  todos.push({
+
+    id:Date.now(),
+
+    text:value,
+
+    p:priority.value,
+
+    done:false
+
+  });
+
+
+  input.value = "";
+
+  save();
+
+}
+
+
+document
+  .getElementById("new")
+  .onkeydown = event => {
+
+    if(event.key === "Enter"){
+
+      add();
+
+    }
+
+  };
+
+
+function render(){
+
+  const list =
+    document.getElementById("list");
+
+
+  list.innerHTML = "";
+
+
+  todos.forEach(todo => {
+
+    const row =
+      document.createElement("div");
+
+
+    row.className =
+      "item" +
+      (todo.done ? " done" : "");
+
+
+    row.innerHTML = `
+
+      <input
+        type="checkbox"
+        ${todo.done ? "checked" : ""}>
+
+      <span></span>
+
+      <select
+        class="prio ${todo.p}">
+
+        <option value="high">
+          重要
+        </option>
+
+        <option value="normal">
+          普通
+        </option>
+
+        <option value="low">
+          低
+        </option>
+
+      </select>
+
+      <button class="del">
+        🗑
+      </button>
+
+    `;
+
+
+    row.querySelector("span")
+      .textContent =
+      todo.text;
+
+
+    /* 完成 */
+
+    row.querySelector("input")
+      .onchange = event => {
+
+        todo.done =
+          event.target.checked;
+
+        save();
+
+      };
+
+
+    /* 修改優先級 */
+
+    const priority =
+      row.querySelector("select");
+
+
+    priority.value =
+      todo.p;
+
+
+    priority.onchange =
+      event => {
+
+        todo.p =
+          event.target.value;
+
+        save();
+
+      };
+
+
+    /* 雙擊修改文字 */
+
+    row.querySelector("span")
+      .ondblclick = () => {
+
+        const input =
+          document.createElement("input");
+
+
+        input.className =
+          "edit";
+
+
+        input.value =
+          todo.text;
+
+
+        row.replaceChild(
+          input,
+          row.querySelector("span")
+        );
+
+
+        input.focus();
+
+
+        const finish = () => {
+
+          const value =
+            input.value.trim();
+
+
+          if(value){
+
+            todo.text =
+              value;
+
+          }
+
+
+          save();
+
+        };
+
+
+        input.onkeydown =
+          event => {
+
+            if(event.key === "Enter"){
+
+              finish();
+
+            }
+
+          };
+
+
+        input.onblur =
+          finish;
+
+      };
+
+
+    /* 垃圾桶 */
+
+    row.querySelector(".del")
+      .onclick = () => {
+
+        todos =
+          todos.filter(
+            item =>
+              item.id !== todo.id
+          );
+
+        save();
+
+      };
+
+
+    list.appendChild(row);
+
+  });
+
+
+  const open =
+    todos.filter(
+      item => !item.done
+    ).length;
+
+
+  const done =
+    todos.filter(
+      item => item.done
+    ).length;
+
+
+  document.getElementById("count")
+    .textContent =
+    open + " open · " +
+    done + " done";
+
+}
+
+
+render();
 
 </script>
 
