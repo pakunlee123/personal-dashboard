@@ -1,714 +1,1288 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
+
 <title>Personal Dashboard</title>
 
 <style>
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#f4f5f7;
-  color:#20242b;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",
-  "Noto Sans TC",sans-serif
+* {
+  box-sizing: border-box;
 }
 
-button,input,select{font:inherit}
-button{cursor:pointer}
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --soft: #f1f3f7;
+  --soft2: #eef1f6;
+  --text: #202633;
+  --muted: #7b8491;
+  --line: #e5e8ed;
+  --blue: #4b82dc;
+  --purple: #6a63d9;
+  --yellow: #e8ad38;
+  --green: #4caf88;
+  --danger: #d95b62;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  height: 68px;
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  font-size: 18px;
+  font-weight: 750;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  color: white;
+
+  background:
+    linear-gradient(135deg,#438ee4,#7564d8);
+
+  box-shadow: 0 5px 15px rgba(73,113,220,.22);
+}
+
+.nav {
+  display: flex;
+  gap: 6px;
+}
+
+.nav button {
+  border: 0;
+  background: transparent;
+
+  color: var(--muted);
+
+  padding: 10px 15px;
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.nav button:hover,
+.nav button.active {
+  color: var(--text);
+  background: #eef0f4;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container {
+  width: min(1450px, calc(100% - 42px));
+  margin: 24px auto 50px;
+}
+
+
+/* =========================
+   TIME CARD
+========================= */
+
+.time-card {
+  height: 255px;
+
+  border-radius: 27px;
+
+  background:
+    linear-gradient(
+      110deg,
+      #3e8ddc 0%,
+      #526fdb 55%,
+      #6d61d6 100%
+    );
+
+  color: white;
+
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+
+  align-items: center;
+
+  padding: 25px 80px;
+
+  box-shadow:
+    0 15px 35px rgba(55,82,170,.18);
+}
+
+.clock-block {
+  text-align: center;
+}
+
+.clock-location {
+  font-size: 17px;
+  font-weight: 650;
+  opacity: .95;
+  margin-bottom: 8px;
+}
+
+.clock-time {
+  font-size: clamp(50px, 5vw, 76px);
+  font-weight: 500;
+  letter-spacing: -3px;
+  line-height: 1;
+}
+
+.clock-city {
+  margin-top: 9px;
+  font-size: 14px;
+  opacity: .8;
+}
+
+.time-divider {
+  width: 1px;
+  height: 105px;
+  background: rgba(255,255,255,.28);
+}
+
+.time-bottom {
+  position: absolute;
+}
+
+.time-extra {
+  grid-column: 1 / 4;
+
+  margin-top: -10px;
+
+  text-align: center;
+}
+
+.world-times {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.today-date {
+  margin-top: 7px;
+  font-size: 14px;
+  opacity: .9;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.row {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.row-weather-transport {
+  grid-template-columns: 0.7fr 1.3fr;
+}
+
+.row-calendar-roster {
+  grid-template-columns: 1.35fr .85fr;
+}
+
+.row-schedule-todo {
+  grid-template-columns: 1fr 1fr;
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: var(--card);
+
+  border: 1px solid var(--line);
+  border-radius: 23px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 6px 24px rgba(35,45,65,.055);
+}
+
+.card-header {
+  min-height: 57px;
+
+  padding: 0 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-/* ===== TOP ===== */
+  border-bottom: 1px solid var(--line);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-size: 14px;
+  font-weight: 750;
+
+  letter-spacing: .12em;
+  color: #6e7682;
+}
+
+.refresh {
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: var(--soft);
+
+  color: #707986;
+
+  cursor: pointer;
+
+  font-size: 20px;
+
+  transition: .2s;
+}
+
+.refresh:hover {
+  transform: rotate(180deg);
+}
 
-.top{
-  height:58px;
-  padding:0 28px;
-  background:#fff;
-  border-bottom:1px solid #e5e7eb;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:9;
-  backdrop-filter:blur(18px)
+
+/* =========================
+   WEATHER
+========================= */
+
+.weather-body {
+  padding: 13px;
+}
+
+.weather-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.brand{
-  font-weight:650;
-  display:flex;
-  align-items:center;
-  gap:10px
+.weather-item {
+  min-height: 112px;
+
+  padding: 15px;
+
+  border-radius: 16px;
+  background: var(--soft);
 }
 
-.logo{
-  width:30px;
-  height:30px;
-  border-radius:9px;
-  background:linear-gradient(135deg,#438bdc,#7168d7);
-  color:white;
-  display:grid;
-  place-items:center
+.weather-place {
+  font-weight: 700;
+  font-size: 14px;
 }
 
-.nav{
-  display:flex;
-  gap:4px
+.weather-temp-row {
+  margin-top: 9px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.nav button{
-  border:0;
-  background:transparent;
-  padding:8px 13px;
-  border-radius:9px;
-  color:#737b87;
-  font-size:11px
+.weather-temp {
+  font-size: 29px;
+  font-weight: 650;
 }
 
-.nav button:hover{
-  background:#f0f2f5
+.weather-icon {
+  font-size: 27px;
 }
 
-.nav .on{
-  background:#e9ecf1;
-  color:#20242b
+.weather-detail {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-/* ===== MAIN ===== */
+.weather-footer {
+  padding: 0 13px 13px;
 
-.wrap{
-  max-width:1450px;
-  margin:auto;
-  padding:14px 24px 28px
+  color: #89919c;
+  font-size: 11px;
 }
+
 
-/* ===== CLOCK ===== */
+/* =========================
+   TRANSPORT
+========================= */
 
-.clock{
-  min-height:205px;
-  border-radius:24px;
-  background:linear-gradient(
-    120deg,
-    #3d8cdb,
-    #536fda 55%,
-    #7168d7
-  );
-  color:white;
-  padding:18px 38px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  box-shadow:0 14px 35px #3557a025
+.transport-card {
+  min-width: 0;
 }
 
-.clockrow{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:48px
+.transport-tabs {
+  margin: 11px 14px 0;
+
+  padding: 4px;
+
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+
+  gap: 4px;
+
+  background: #f0f2f6;
+  border-radius: 16px;
 }
+
+.transport-tab {
+  border: 0;
+  border-radius: 13px;
+
+  background: transparent;
+
+  color: #747d89;
+
+  padding: 10px 6px;
 
-.zone{
-  flex:1;
-  text-align:center
+  font-size: 15px;
+  font-weight: 650;
+
+  cursor: pointer;
 }
 
-.label{
-  font-size:15px;
-  font-weight:650
+.transport-tab.active {
+  background: white;
+  color: var(--text);
+
+  box-shadow:
+    0 2px 7px rgba(0,0,0,.07);
 }
+
+.direction-tabs {
+  margin: 10px 14px 0;
 
-.time{
-  font-size:84px;
-  line-height:.95;
-  margin-top:4px;
-  font-weight:300;
-  letter-spacing:-.06em
+  padding: 4px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 4px;
+
+  background: #f0f2f6;
+  border-radius: 16px;
 }
+
+.direction-tab {
+  border: 0;
+  border-radius: 13px;
 
-.city{
-  font-size:12px;
-  opacity:.8;
-  margin-top:7px
+  background: transparent;
+
+  color: #747d89;
+
+  padding: 10px 7px;
+
+  font-size: 14px;
+  font-weight: 650;
+
+  cursor: pointer;
 }
 
-.divider{
-  width:1px;
-  height:88px;
-  background:#ffffff40
+.direction-tab.active {
+  background: white;
+  color: var(--text);
+
+  box-shadow:
+    0 2px 7px rgba(0,0,0,.07);
 }
+
+.transport-notice {
+  margin: 10px 14px;
+
+  padding: 10px 13px;
+
+  border-radius: 14px;
 
-.smalltimes{
-  text-align:center;
-  font-size:13px;
-  margin-top:13px;
-  opacity:.88
+  background: #fff5dc;
+
+  color: #78632d;
+
+  font-size: 12px;
 }
 
-.date{
-  text-align:center;
-  font-size:13px;
-  margin-top:5px
+.transport-results {
+  padding-bottom: 2px;
 }
+
+.transport-result {
+  margin: 0 14px 10px;
+
+  padding: 14px 16px;
+
+  background: #f1f5f9;
+
+  border-radius: 17px;
+
+  display: grid;
+  grid-template-columns: 88px 1fr;
 
-/* ===== GRID ===== */
+  gap: 15px;
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  gap:13px;
-  margin-top:13px
+  transition: .18s;
 }
 
-.card{
-  background:#fff;
-  border:1px solid #e4e6ea;
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 6px 20px #1e26340a
+.transport-result:hover {
+  background: #edf2f7;
 }
 
-.head{
-  height:45px;
-  padding:0 15px;
-  border-bottom:1px solid #f0f1f3;
-  display:flex;
-  align-items:center;
-  justify-content:space-between
+.transport-time {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.title{
-  font-size:10px;
-  letter-spacing:.12em;
-  font-weight:700;
-  color:#737b87
+.departure-time {
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -.5px;
 }
 
-.refresh{
-  border:0;
-  background:#f0f2f5;
-  color:#707884;
-  border-radius:8px;
-  width:27px;
-  height:27px
+.distance {
+  margin-top: 5px;
+  color: #7c8490;
+  font-size: 12px;
 }
 
-.refresh:hover{
-  background:#e7e9ed
+.transport-route {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.35;
 }
+
+.transport-details {
+  margin-top: 5px;
+
+  color: #777f8b;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.transport-footer {
+  min-height: 44px;
+
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-top: 1px solid var(--line);
 
-/* ===== WEATHER ===== */
+  color: #858d97;
+  font-size: 11px;
+}
 
-.weather{
-  grid-column:span 4
+.status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
 
-.weatherbody{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  padding:9px
+  background: var(--yellow);
 }
 
-.wcity{
-  padding:10px;
-  background:#f2f4f7;
-  border-radius:13px
+
+/* =========================
+   CALENDAR
+========================= */
+
+.calendar-body {
+  min-height: 220px;
+  padding: 15px;
 }
 
-.wcity b{
-  font-size:11px
+.calendar-tools {
+  display: flex;
+  gap: 6px;
 }
+
+.filter-btn {
+  border: 0;
+
+  padding: 7px 12px;
 
-.wmain{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-top:4px
+  border-radius: 10px;
+
+  background: var(--soft);
+
+  color: #777f8b;
+
+  cursor: pointer;
+
+  font-size: 12px;
 }
 
-.temp{
-  font-size:28px;
-  font-weight:600
+.filter-btn.active {
+  background: #e5edf9;
+  color: #4074bd;
 }
+
+.calendar-empty {
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: #8b929d;
 
-.wd{
-  font-size:9px;
-  color:#7d8590
+  font-size: 13px;
 }
 
-.forecast{
-  padding:0 11px 9px;
-  font-size:9px;
-  color:#7d8590
+
+/* =========================
+   ROSTER
+========================= */
+
+.roster-body {
+  padding: 15px;
 }
+
+.roster-main {
+  padding: 17px;
+
+  border-radius: 17px;
 
-/* ===== TRANSPORT ===== */
+  background: var(--soft);
+}
 
-.transport{
-  grid-column:span 8
+.roster-label {
+  font-size: 11px;
+  color: #7d8591;
+  letter-spacing: .12em;
 }
+
+.roster-duty {
+  margin-top: 5px;
 
-.controls{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  padding:8px 12px 7px
+  font-size: 27px;
+  font-weight: 750;
 }
 
-.controls button{
-  border:0;
-  background:#f0f2f5;
-  color:#747b86;
-  border-radius:8px;
-  padding:6px 10px;
-  font-size:10px
+.roster-time {
+  margin-top: 2px;
+
+  color: #7c8490;
+  font-size: 12px;
 }
 
-.controls button:hover{
-  background:#e5e8ed
+.roster-list {
+  margin-top: 12px;
 }
+
+.roster-row {
+  min-height: 39px;
 
-.controls .on{
-  background:#dfe9f7;
-  color:#37689e;
-  font-weight:650
+  display: grid;
+  grid-template-columns: 75px 1fr 55px;
+
+  align-items: center;
+
+  border-bottom: 1px solid #edf0f3;
+
+  font-size: 13px;
 }
 
-.direction{
-  margin-left:auto;
-  font-size:10px;
-  color:#7d8490
+.roster-row:last-child {
+  border-bottom: 0;
 }
 
-.routes{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-  padding:0 12px 11px
+.roster-date {
+  font-weight: 700;
 }
 
-.route{
-  padding:9px;
-  background:#f3f5f8;
-  border-radius:11px
+.roster-code {
+  color: #303846;
 }
+
+.roster-tag {
+  justify-self: end;
+
+  padding: 4px 8px;
+
+  border-radius: 9px;
+
+  background: #eef0f4;
+
+  color: #727b87;
 
-.rt{
-  font-size:15px;
-  font-weight:650
+  font-size: 10px;
 }
 
-.rn{
-  font-size:10px;
-  margin-top:3px
+
+/* =========================
+   SCHEDULE
+========================= */
+
+.schedule-body {
+  min-height: 230px;
 }
+
+.schedule-row {
+  min-height: 52px;
 
-.ri{
-  font-size:9px;
-  color:#7d8490;
-  margin-top:3px
+  padding: 0 17px;
+
+  display: grid;
+  grid-template-columns: 65px 1fr auto;
+
+  align-items: center;
+
+  border-bottom: 1px solid #edf0f3;
 }
 
-/* ===== CALENDAR ===== */
+.schedule-row:last-child {
+  border-bottom: 0;
+}
 
-.calendar{
-  grid-column:span 7
+.schedule-time {
+  font-weight: 700;
+  font-size: 14px;
 }
 
-.tabs{
-  padding:8px 12px
+.schedule-name {
+  font-size: 14px;
 }
 
-.tabs button{
-  border:0;
-  background:#f0f2f5;
-  padding:6px 10px;
-  border-radius:8px;
-  font-size:9px;
-  margin-right:4px
+.source {
+  padding: 4px 8px;
+
+  border-radius: 9px;
+
+  background: #eef0f3;
+
+  font-size: 9px;
+  font-weight: 700;
 }
+
 
-.tabs button:hover{
-  background:#e6e9ed
+/* =========================
+   TODO
+========================= */
+
+.todo-body {
+  padding: 14px;
 }
+
+.todo-add {
+  display: grid;
+  grid-template-columns: 1fr 100px 42px;
 
-.tabs .on{
-  background:#dfe9f7;
-  color:#37689e
+  gap: 7px;
 }
+
+.todo-add input,
+.todo-add select {
+  min-width: 0;
+
+  border: 1px solid #dfe3e9;
 
-.empty{
-  height:88px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  color:#8a919c;
-  font-size:10px
+  border-radius: 12px;
+
+  padding: 10px 12px;
+
+  outline: none;
+
+  background: white;
+
+  font-size: 13px;
 }
 
-.empty b{
-  color:#555d68
+.todo-add input:focus {
+  border-color: #8baee3;
 }
+
+.add-btn {
+  border: 0;
+
+  border-radius: 12px;
+
+  background: #e8f0fc;
 
-/* ===== ROSTER ===== */
+  color: #4279c7;
 
-.roster{
-  grid-column:span 5
+  font-size: 21px;
+
+  cursor: pointer;
+}
+
+.todo-list {
+  margin-top: 8px;
 }
+
+.todo-row {
+  min-height: 54px;
 
-.rosterbody{
-  padding:10px 12px
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-bottom: 1px solid #edf0f3;
 }
 
-.todaybox{
-  background:#f3f5f8;
-  border-radius:12px;
-  padding:10px
+.todo-row:last-child {
+  border-bottom: 0;
 }
+
+.todo-check {
+  width: 18px;
+  height: 18px;
 
-.rlabel{
-  font-size:8px;
-  color:#8a919b
+  cursor: pointer;
 }
 
-.duty{
-  font-size:18px;
-  font-weight:650;
-  margin-top:3px
+.todo-content {
+  min-width: 0;
 }
 
-.rtime{
-  font-size:9px;
-  color:#747c87
+.todo-text {
+  font-size: 14px;
 }
 
-.rrow{
-  display:grid;
-  grid-template-columns:58px 1fr auto;
-  padding:7px 3px;
-  border-top:1px solid #f0f1f3;
-  font-size:10px
+.todo-row.done .todo-text {
+  text-decoration: line-through;
+  color: #a0a5ad;
 }
 
-.tag{
-  background:#eef0f3;
-  border-radius:6px;
-  padding:3px 6px;
-  font-size:8px
+.todo-meta {
+  margin-top: 3px;
+
+  display: flex;
+  gap: 6px;
+
+  font-size: 10px;
 }
 
-/* ===== TODAY ===== */
+.priority {
+  padding: 3px 7px;
 
-.today{
-  grid-column:span 6
+  border-radius: 7px;
 }
 
-/* ===== TODO ===== */
+.priority-high {
+  background: #fde6e6;
+  color: #c75b62;
+}
 
-.todo{
-  grid-column:span 6
+.priority-normal {
+  background: #e8f0fc;
+  color: #477bc1;
 }
 
-.todoadd{
-  display:flex;
-  margin:9px 12px 7px;
-  border:1px solid #e1e4e8;
-  border-radius:10px;
-  overflow:hidden
+.priority-low {
+  background: #e9f5ef;
+  color: #4c8c70;
 }
 
-.todoadd input{
-  flex:1;
-  border:0;
-  outline:0;
-  padding:9px 10px;
-  font-size:10px
+.todo-actions {
+  display: flex;
+  gap: 4px;
 }
+
+.todo-action {
+  width: 31px;
+  height: 31px;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: #f1f3f6;
+
+  cursor: pointer;
 
-.todoadd select{
-  border:0;
-  border-left:1px solid #e1e4e8;
-  padding:0 5px;
-  font-size:9px;
-  background:white
+  color: #69727e;
 }
 
-.todoadd button{
-  border:0;
-  background:#eef2f7;
-  color:#4381c7;
-  padding:0 13px
+.todo-action.delete:hover {
+  background: #fde8e8;
+  color: var(--danger);
 }
 
-.item{
-  display:grid;
-  grid-template-columns:20px 1fr auto auto;
-  gap:7px;
-  align-items:center;
-  padding:8px 12px;
-  border-top:1px solid #f0f1f3;
-  font-size:10px
+
+/* =========================
+   FOOTER
+========================= */
+
+.page-footer {
+  margin-top: 22px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #8b929c;
+
+  font-size: 11px;
 }
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings-panel {
+  display: none;
 
-.item.done span{
-  text-decoration:line-through;
-  color:#a0a5ac
+  position: fixed;
+  inset: 0;
+
+  z-index: 300;
+
+  background: rgba(20,25,35,.28);
+
+  backdrop-filter: blur(8px);
 }
 
-.prio{
-  border:0;
-  border-radius:7px;
-  padding:4px 6px;
-  font-size:8px
+.settings-panel.open {
+  display: flex;
+  justify-content: flex-end;
 }
+
+.settings-box {
+  width: min(420px, 90vw);
+  height: 100%;
 
-.high{
-  background:#fde9e7;
-  color:#b94a42
+  padding: 30px;
+
+  background: white;
+
+  box-shadow:
+    -10px 0 35px rgba(0,0,0,.12);
 }
 
-.normal{
-  background:#e9f1fb;
-  color:#4779ad
+.settings-title {
+  font-size: 23px;
+  font-weight: 750;
+
+  margin-bottom: 25px;
 }
+
+.setting-item {
+  padding: 15px 0;
 
-.low{
-  background:#eef5ee;
-  color:#5e8960
+  border-bottom: 1px solid var(--line);
 }
 
-.del{
-  border:0;
-  background:transparent;
-  color:#9299a2;
-  font-size:13px
+.setting-label {
+  font-weight: 700;
 }
 
-.del:hover{
-  color:#d34d4d
+.setting-description {
+  margin-top: 5px;
+
+  color: var(--muted);
+
+  font-size: 12px;
 }
+
+.close-settings {
+  float: right;
+
+  border: 0;
 
-.edit{
-  width:100%;
-  border:1px solid #ccd4df;
-  border-radius:6px;
-  padding:4px 6px;
-  font-size:10px
+  background: var(--soft);
+
+  width: 35px;
+  height: 35px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
 }
+
 
-/* ===== RESPONSIVE ===== */
+/* =========================
+   MOBILE
+========================= */
 
-@media(max-width:950px){
+@media (max-width: 1000px) {
 
-  .weather,
-  .transport,
-  .calendar,
-  .roster,
-  .today,
-  .todo{
-    grid-column:span 6
+  .container {
+    width: calc(100% - 24px);
+    margin-top: 14px;
   }
 
+  .topbar {
+    padding: 0 16px;
+  }
+
+  .row-weather-transport,
+  .row-calendar-roster,
+  .row-schedule-todo {
+    grid-template-columns: 1fr;
+  }
+
+  .time-card {
+    padding: 22px 30px;
+  }
 }
 
-@media(max-width:650px){
 
-  .top{
-    padding:0 13px
+@media (max-width: 600px) {
+
+  .topbar {
+    height: 60px;
   }
 
-  .nav{
-    display:none
+  .brand {
+    font-size: 15px;
   }
 
-  .wrap{
-    padding:9px
+  .nav button {
+    padding: 8px 7px;
+    font-size: 12px;
   }
 
-  .clock{
-    min-height:220px;
-    padding:20px 12px
+  .brand-icon {
+    width: 28px;
+    height: 28px;
   }
 
-  .clockrow{
-    gap:12px
+  .time-card {
+    height: 220px;
+
+    padding: 20px 12px;
+
+    grid-template-columns: 1fr 1px 1fr;
+
+    border-radius: 22px;
   }
 
-  .time{
-    font-size:46px
+  .clock-location {
+    font-size: 13px;
   }
 
-  .label{
-    font-size:11px
+  .clock-time {
+    font-size: 43px;
+    letter-spacing: -2px;
   }
 
-  .divider{
-    height:70px
+  .clock-city {
+    font-size: 11px;
   }
 
-  .grid{
-    display:flex;
-    flex-direction:column
+  .time-divider {
+    height: 85px;
   }
 
-  .routes{
-    grid-template-columns:1fr
+  .world-times {
+    gap: 14px;
+    font-size: 11px;
   }
 
+  .today-date {
+    font-size: 11px;
+  }
+
+  .weather-list {
+    gap: 7px;
+  }
+
+  .weather-item {
+    padding: 11px;
+  }
+
+  .weather-temp {
+    font-size: 25px;
+  }
+
+  .transport-result {
+    grid-template-columns: 73px 1fr;
+    gap: 11px;
+
+    padding: 12px;
+  }
+
+  .departure-time {
+    font-size: 21px;
+  }
+
+  .transport-route {
+    font-size: 14px;
+  }
+
+  .transport-details {
+    font-size: 11px;
+  }
+
+  .todo-add {
+    grid-template-columns: 1fr 90px 38px;
+  }
+
+  .page-footer {
+    flex-direction: column;
+    gap: 5px;
+  }
 }
 </style>
 </head>
 
+
 <body>
 
-<header class="top">
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="topbar">
 
   <div class="brand">
-    <div class="logo">✦</div>
-    Personal Dashboard
+    <div class="brand-icon">✦</div>
+    <span>Personal Dashboard</span>
   </div>
 
   <nav class="nav">
-    <button class="on" data-section="home">首頁</button>
-    <button data-section="calendar">日曆</button>
-    <button data-section="work">工作</button>
-    <button data-section="settings">設定</button>
+
+    <button class="active" onclick="goTo('home',this)">
+      首頁
+    </button>
+
+    <button onclick="goTo('calendar',this)">
+      日曆
+    </button>
+
+    <button onclick="goTo('work',this)">
+      工作
+    </button>
+
+    <button onclick="openSettings()">
+      設定
+    </button>
+
   </nav>
 
 </header>
 
 
-<main class="wrap">
+<main class="container" id="home">
 
-<!-- ================= CLOCK ================= -->
 
-<section class="clock" id="home">
+<!-- =========================
+     TIME
+========================= -->
 
-  <div class="clockrow">
+<section class="time-card">
 
-    <div class="zone">
+  <div class="clock-block">
 
-      <div class="label">🇯🇵 日本</div>
-
-      <div class="time" id="jp">
-        --:--
-      </div>
-
-      <div class="city">
-        東京 · Tokyo
-      </div>
-
+    <div class="clock-location">
+      🇯🇵 日本
     </div>
 
+    <div class="clock-time" id="japanTime">
+      --:--
+    </div>
 
-    <div class="divider"></div>
-
-
-    <div class="zone">
-
-      <div class="label">🇭🇰 香港</div>
-
-      <div class="time" id="hk">
-        --:--
-      </div>
-
-      <div class="city">
-        香港 · Hong Kong
-      </div>
-
+    <div class="clock-city">
+      東京・Tokyo
     </div>
 
   </div>
 
 
-  <div class="smalltimes">
+  <div class="time-divider"></div>
 
-    🇺🇸 DFW
-    <span id="dfw">--:--</span>
 
-   　·　
+  <div class="clock-block">
 
-    🇩🇪 FRA
-    <span id="fra">--:--</span>
+    <div class="clock-location">
+      🇭🇰 香港
+    </div>
+
+    <div class="clock-time" id="hongKongTime">
+      --:--
+    </div>
+
+    <div class="clock-city">
+      香港・Hong Kong
+    </div>
 
   </div>
 
 
-  <div class="date" id="date">
-    --
+  <div class="time-extra">
+
+    <div class="world-times">
+
+      <span>
+        🇺🇸 DFW
+        <strong id="dfwTime">--:--</strong>
+      </span>
+
+      <span>
+        🇩🇪 FRA
+        <strong id="fraTime">--:--</strong>
+      </span>
+
+    </div>
+
+    <div class="today-date" id="dateText">
+      ----年--月--日
+    </div>
+
   </div>
 
 </section>
 
 
-<div class="grid">
+<!-- =========================
+     WEATHER + TRANSPORT
+========================= -->
 
-<!-- ================= WEATHER ================= -->
+<div class="row row-weather-transport">
 
-<section class="card weather">
 
-  <div class="head">
+<!-- WEATHER -->
 
-    <div class="title">
+<section class="card">
+
+  <div class="card-header">
+
+    <div class="card-title">
       🌤️ 天氣
     </div>
 
-    <button
-      class="refresh"
-      onclick="refresh(this)">
+    <button class="refresh"
+            onclick="refreshWeather()">
       ↻
     </button>
 
   </div>
 
 
-  <div class="weatherbody">
+  <div class="weather-body">
 
-    <div class="wcity">
+    <div class="weather-list">
 
-      <b>🇯🇵 新浦安</b>
+      <div class="weather-item">
 
-      <div class="wmain">
+        <div class="weather-place">
+          🇯🇵 新浦安
+        </div>
 
-        <span class="temp">
-          --°
-        </span>
+        <div class="weather-temp-row">
 
-        <span>
-          🌤️
-        </span>
+          <div class="weather-temp">
+            24°
+          </div>
 
-      </div>
+          <div class="weather-icon">
+            🌦️
+          </div>
 
-      <div class="wd">
-        尚未連接即時天氣
-      </div>
+        </div>
 
-    </div>
-
-
-    <div class="wcity">
-
-      <b>🇭🇰 香港</b>
-
-      <div class="wmain">
-
-        <span class="temp">
-          --°
-        </span>
-
-        <span>
-          🌤️
-        </span>
+        <div class="weather-detail">
+          Drizzle・體感 26°
+        </div>
 
       </div>
 
-      <div class="wd">
-        尚未連接即時天氣
+
+      <div class="weather-item">
+
+        <div class="weather-place">
+          🇭🇰 香港
+        </div>
+
+        <div class="weather-temp-row">
+
+          <div class="weather-temp">
+            29°
+          </div>
+
+          <div class="weather-icon">
+            🌤️
+          </div>
+
+        </div>
+
+        <div class="weather-detail">
+          Partly cloudy・體感 34°
+        </div>
+
       </div>
 
     </div>
@@ -716,691 +1290,428 @@ button{cursor:pointer}
   </div>
 
 
-  <div class="forecast">
-    新浦安 · 9日預報　尚未連接 Weather API
+  <div class="weather-footer">
+    新浦安・9日預報・Demo weather data
   </div>
 
 </section>
 
 
-<!-- ================= TRANSPORT ================= -->
+<!-- TRANSPORT -->
 
-<section class="card transport">
+<section class="card transport-card">
 
-  <div class="head">
+  <div class="card-header">
 
-    <div class="title">
-      🚆 交通 · 新浦安站
+    <div class="card-title">
+      🚆 交通・新浦安站
     </div>
 
-    <button
-      class="refresh"
-      onclick="refresh(this)">
+    <button class="refresh"
+            onclick="refreshTransport()">
       ↻
     </button>
 
   </div>
 
 
-  <div class="controls">
+  <div class="transport-tabs">
 
     <button
-      class="on"
-      data-d="羽田 HND">
+      class="transport-tab active"
+      data-destination="HND"
+      onclick="selectDestination('HND')">
       羽田 HND
     </button>
 
     <button
-      data-d="成田 NRT">
+      class="transport-tab"
+      data-destination="NRT"
+      onclick="selectDestination('NRT')">
       成田 NRT
     </button>
 
     <button
-      data-d="青砥 Aoto">
-      青砥 Aoto
+      class="transport-tab"
+      data-destination="AOTO"
+      onclick="selectDestination('AOTO')">
+      青砥
     </button>
 
-
-    <span
-      class="direction"
-      id="dir">
-
-      新浦安 ↔ 羽田 HND
-
-    </span>
-
   </div>
 
 
-  <div class="routes">
-
-    <!-- 去程 -->
-
-    <div class="route">
-
-      <div class="rt">
-        --:--
-      </div>
-
-      <div
-        class="rn"
-        id="go">
-
-        新浦安 → 羽田
-
-      </div>
-
-      <div class="ri">
-        去程 · 尚未連接
-      </div>
-
-    </div>
-
-
-    <!-- 回程 -->
-
-    <div class="route">
-
-      <div class="rt">
-        --:--
-      </div>
-
-      <div
-        class="rn"
-        id="back">
-
-        羽田 → 新浦安
-
-      </div>
-
-      <div class="ri">
-        回程 · 尚未連接
-      </div>
-
-    </div>
-
-
-    <!-- 下一班 -->
-
-    <div class="route">
-
-      <div class="rt">
-        --:--
-      </div>
-
-      <div
-        class="rn"
-        id="both">
-
-        新浦安 ↔ 羽田
-
-      </div>
-
-      <div class="ri">
-        下一班 · 尚未連接
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= CALENDAR ================= -->
-
-<section
-  class="card calendar"
-  id="calendar">
-
-  <div class="head">
-
-    <div class="title">
-      📅 日曆
-    </div>
+  <div class="direction-tabs">
 
     <button
-      class="refresh"
-      onclick="refresh(this)">
-      ↻
+      class="direction-tab active"
+      data-direction="outbound"
+      onclick="selectDirection('outbound')">
+      去程・新浦安 → 羽田
+    </button>
+
+    <button
+      class="direction-tab"
+      data-direction="return"
+      onclick="selectDirection('return')">
+      回程・羽田 → 新浦安
     </button>
 
   </div>
 
 
-  <div class="tabs">
-
-    <button class="on">
-      全部
-    </button>
-
-    <button>
-      🍎 Apple
-    </button>
-
-    <button>
-      🟢 Google
-    </button>
-
+  <div class="transport-notice">
+    ⚠️ 未連接即時交通 API — 以下為參考時刻表，並非即時資料。
   </div>
 
 
-  <div class="empty">
+  <div id="transportResults"
+       class="transport-results">
+  </div>
 
-    <b>
-      尚未連接日曆
-    </b>
+
+  <div class="transport-footer">
+
+    <div class="status">
+      <span class="status-dot"></span>
+      Demo data・未連接
+    </div>
 
     <span>
-      Apple / Google Calendar integration
+      公開時刻表參考
     </span>
 
   </div>
-
-</section>
-
-
-<!-- ================= ROSTER ================= -->
-
-<section
-  class="card roster"
-  id="work">
-
-  <div class="head">
-
-    <div class="title">
-      ✈️ 工作 / Roster
-    </div>
-
-    <button
-      class="refresh"
-      onclick="refresh(this)">
-      ↻
-    </button>
-
-  </div>
-
-
-  <div class="rosterbody">
-
-    <div class="todaybox">
-
-      <div class="rlabel">
-        今日
-      </div>
-
-      <div class="duty">
-        尚未設定
-      </div>
-
-      <div class="rtime">
-        可稍後加入 Roster
-      </div>
-
-    </div>
-
-
-    <div class="rrow">
-
-      <span>
-        下一個
-      </span>
-
-      <span>
-        尚未設定
-      </span>
-
-      <span class="tag">
-        —
-      </span>
-
-    </div>
-
-
-    <div class="rrow">
-
-      <span>
-        航班
-      </span>
-
-      <span>
-        尚未設定
-      </span>
-
-      <span class="tag">
-        —
-      </span>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= TODAY ================= -->
-
-<section class="card today">
-
-  <div class="head">
-
-    <div class="title">
-      📅 今日行程
-    </div>
-
-    <button
-      class="refresh"
-      onclick="refresh(this)">
-      ↻
-    </button>
-
-  </div>
-
-
-  <div class="empty">
-
-    <b>
-      尚未連接 Calendar
-    </b>
-
-    <span>
-      連接後顯示今日行程
-    </span>
-
-  </div>
-
-</section>
-
-
-<!-- ================= TODO ================= -->
-
-<section class="card todo">
-
-  <div class="head">
-
-    <div class="title">
-      ☑️ 待辦事項
-    </div>
-
-    <span
-      id="count"
-      style="font-size:9px;color:#858c97">
-
-      0 open
-
-    </span>
-
-  </div>
-
-
-  <div class="todoadd">
-
-    <input
-      id="new"
-      placeholder="新增待辦事項…">
-
-    <select id="level">
-
-      <option value="normal">
-        普通
-      </option>
-
-      <option value="high">
-        重要
-      </option>
-
-      <option value="low">
-        低
-      </option>
-
-    </select>
-
-
-    <button onclick="add()">
-      ＋
-    </button>
-
-  </div>
-
-
-  <div id="list"></div>
 
 </section>
 
 </div>
 
-</main>
 
+<!-- =========================
+     CALENDAR + ROSTER
+========================= -->
 
-<script>
+<div class="row row-calendar-roster"
+     id="calendar">
 
-/* =========================================
-   WORLD CLOCK
-========================================= */
 
-const tz = (zone) => {
+<!-- CALENDAR -->
 
-  return new Intl.DateTimeFormat(
-    "en-GB",
-    {
-      timeZone:zone,
-      hour:"2-digit",
-      minute:"2-digit",
-      hour12:false
-    }
-  ).format(new Date());
+<section class="card">
 
-};
+  <div class="card-header">
 
+    <div class="card-title">
+      📅 日曆
+    </div>
 
-function clock(){
+    <button class="refresh"
+            onclick="refreshCalendar()">
+      ↻
+    </button>
 
-  document.getElementById("jp").textContent =
-    tz("Asia/Tokyo");
+  </div>
 
-  document.getElementById("hk").textContent =
-    tz("Asia/Hong_Kong");
 
-  document.getElementById("dfw").textContent =
-    tz("America/Chicago");
+  <div class="calendar-body">
 
-  document.getElementById("fra").textContent =
-    tz("Europe/Berlin");
+    <div class="calendar-tools">
 
+      <button
+        class="filter-btn active"
+        onclick="calendarFilter('all',this)">
+        全部
+      </button>
 
-  document.getElementById("date").textContent =
-    new Intl.DateTimeFormat(
-      "zh-Hant-TW",
-      {
-        timeZone:"Asia/Tokyo",
-        year:"numeric",
-        month:"long",
-        day:"numeric",
-        weekday:"long"
-      }
-    ).format(new Date());
+      <button
+        class="filter-btn"
+        onclick="calendarFilter('apple',this)">
+        🍎 Apple
+      </button>
 
-}
+      <button
+        class="filter-btn"
+        onclick="calendarFilter('google',this)">
+        🟢 Google
+      </button>
 
+    </div>
 
-clock();
 
-setInterval(clock,1000);
+    <div class="calendar-empty">
 
+      <div>
 
-/* =========================================
-   REFRESH BUTTON
-========================================= */
+        <strong>
+          尚未連接日曆
+        </strong>
 
-function refresh(button){
+        <br><br>
 
-  const oldText = button.textContent;
+        Apple / Google Calendar
+        連接後會顯示今日行程
 
-  button.textContent = "…";
+      </div>
 
-  button.disabled = true;
+    </div>
 
-  setTimeout(() => {
+  </div>
 
-    button.textContent = oldText;
+</section>
 
-    button.disabled = false;
 
-  },500);
+<!-- ROSTER -->
 
-}
+<section class="card" id="work">
 
+  <div class="card-header">
 
-/* =========================================
-   TRANSPORT
-========================================= */
+    <div class="card-title">
+      ✈️ 工作 / Roster
+    </div>
 
-function destName(value){
+    <button class="refresh"
+            onclick="refreshRoster()">
+      ↻
+    </button>
 
-  return value
-    .replace(" HND","")
-    .replace(" NRT","")
-    .replace(" Aoto","");
+  </div>
 
-}
 
+  <div class="roster-body">
 
-document
-  .querySelectorAll(".controls button")
-  .forEach(button => {
+    <div class="roster-main">
 
-    button.onclick = () => {
+      <div class="roster-label">
+        TODAY
+      </div>
 
-      document
-        .querySelectorAll(".controls button")
-        .forEach(item => {
+      <div class="roster-duty">
+        K室
+      </div>
 
-          item.classList.remove("on");
+      <div class="roster-time">
+        09:00–18:00
+      </div>
 
-        });
+    </div>
 
 
-      button.classList.add("on");
+    <div class="roster-list">
 
+      <div class="roster-row">
 
-      const destination =
-        button.dataset.d;
+        <div class="roster-date">
+          SEP 7
+        </div>
 
+        <div class="roster-code">
+          OFF
+        </div>
 
-      const name =
-        destName(destination);
+        <div class="roster-tag">
+          REST
+        </div>
 
+      </div>
 
-      document.getElementById("dir")
-        .textContent =
-        "新浦安 ↔ " + destination;
 
+      <div class="roster-row">
 
-      document.getElementById("go")
-        .textContent =
-        "新浦安 → " + name;
+        <div class="roster-date">
+          SEP 8
+        </div>
 
+        <div class="roster-code">
+          JL 031
+        </div>
 
-      document.getElementById("back")
-        .textContent =
-        name + " → 新浦安";
+        <div class="roster-tag">
+          NEXT
+        </div>
 
+      </div>
 
-      document.getElementById("both")
-        .textContent =
-        "新浦安 ↔ " + name;
 
-    };
+      <div class="roster-row">
 
-  });
+        <div class="roster-date">
+          SEP 9
+        </div>
 
+        <div class="roster-code">
+          JL 032
+        </div>
 
-/* =========================================
-   TOP NAVIGATION
-========================================= */
+        <div class="roster-tag">
+          NEXT
+        </div>
 
-document
-  .querySelectorAll(".nav button")
-  .forEach(button => {
+      </div>
 
-    button.onclick = () => {
 
-      document
-        .querySelectorAll(".nav button")
-        .forEach(item =>
-          item.classList.remove("on")
-        );
+      <div class="roster-row">
 
+        <div class="roster-date">
+          SEP 10
+        </div>
 
-      button.classList.add("on");
+        <div class="roster-code">
+          OFF
+        </div>
 
+        <div class="roster-tag">
+          REST
+        </div>
 
-      const section =
-        button.dataset.section;
+      </div>
 
+    </div>
 
-      if(section === "calendar"){
+  </div>
 
-        document
-          .getElementById("calendar")
-          .scrollIntoView({
-            behavior:"smooth",
-            block:"center"
-          });
+</section>
 
-      }
+</div>
 
 
-      if(section === "work"){
+<!-- =========================
+     SCHEDULE + TODO
+========================= -->
 
-        document
-          .getElementById("work")
-          .scrollIntoView({
-            behavior:"smooth",
-            block:"center"
-          });
+<div class="row row-schedule-todo">
 
-      }
 
+<!-- SCHEDULE -->
 
-      if(section === "home"){
+<section class="card">
 
-        window.scrollTo({
-          top:0,
-          behavior:"smooth"
-        });
+  <div class="card-header">
 
-      }
+    <div class="card-title">
+      📅 今日行程
+    </div>
 
+    <button class="refresh"
+            onclick="refreshSchedule()">
+      ↻
+    </button>
 
-      if(section === "settings"){
+  </div>
 
-        alert(
-          "設定功能將於下一階段加入。"
-        );
 
-      }
+  <div class="schedule-body">
 
-    };
+    <div class="schedule-row">
 
-  });
+      <div class="schedule-time">
+        00:00
+      </div>
 
+      <div class="schedule-name">
+        OFF (HKG)
+      </div>
 
-/* =========================================
-   TODO
-   LocalStorage
-========================================= */
+      <div class="source">
+        APPLE
+      </div>
 
-let todos =
-  JSON.parse(
-    localStorage.getItem("pdTodos") || "[]"
-  );
+    </div>
 
 
-function save(){
+    <div class="schedule-row">
 
-  localStorage.setItem(
-    "pdTodos",
-    JSON.stringify(todos)
-  );
+      <div class="schedule-time">
+        00:00
+      </div>
 
-  render();
+      <div class="schedule-name">
+        LEAVE (HKG)
+      </div>
 
-}
+      <div class="source">
+        APPLE
+      </div>
 
+    </div>
 
-function add(){
 
-  const input =
-    document.getElementById("new");
+    <div class="schedule-row">
 
-  const priority =
-    document.getElementById("level");
+      <div class="schedule-time">
+        03:00
+      </div>
 
+      <div class="schedule-name">
+        Coey Kay Lois dinner
+      </div>
 
-  const value =
-    input.value.trim();
+      <div class="source">
+        APPLE
+      </div>
 
+    </div>
 
-  if(!value){
 
-    input.focus();
+    <div class="schedule-row">
 
-    return;
+      <div class="schedule-time">
+        14:00
+      </div>
 
-  }
+      <div class="schedule-name">
+        Dashboard build
+      </div>
 
+      <div class="source">
+        GOOGLE
+      </div>
 
-  todos.push({
+    </div>
 
-    id:Date.now(),
+  </div>
 
-    text:value,
+</section>
 
-    p:priority.value,
 
-    done:false
+<!-- TODO -->
 
-  });
+<section class="card">
 
+  <div class="card-header">
 
-  input.value = "";
+    <div class="card-title">
+      ☑️ 待辦事項
+    </div>
 
-  save();
+    <span id="todoCount"
+          style="font-size:11px;color:#858d97;">
+      0 個未完成
+    </span>
 
-}
+  </div>
 
 
-document
-  .getElementById("new")
-  .onkeydown = event => {
+  <div class="todo-body">
 
-    if(event.key === "Enter"){
-
-      add();
-
-    }
-
-  };
-
-
-function render(){
-
-  const list =
-    document.getElementById("list");
-
-
-  list.innerHTML = "";
-
-
-  todos.forEach(todo => {
-
-    const row =
-      document.createElement("div");
-
-
-    row.className =
-      "item" +
-      (todo.done ? " done" : "");
-
-
-    row.innerHTML = `
+    <div class="todo-add">
 
       <input
-        type="checkbox"
-        ${todo.done ? "checked" : ""}>
+        id="todoInput"
+        type="text"
+        placeholder="新增待辦事項..."
+        onkeydown="todoEnter(event)"
+      >
 
-      <span></span>
-
-      <select
-        class="prio ${todo.p}">
-
-        <option value="high">
-          重要
-        </option>
+      <select id="todoPriority">
 
         <option value="normal">
           普通
+        </option>
+
+        <option value="high">
+          重要
         </option>
 
         <option value="low">
@@ -1409,157 +1720,1083 @@ function render(){
 
       </select>
 
-      <button class="del">
-        🗑
+      <button
+        class="add-btn"
+        onclick="addTodo()">
+        +
       </button>
 
-    `;
+    </div>
 
 
-    row.querySelector("span")
-      .textContent =
-      todo.text;
+    <div id="todoList"
+         class="todo-list">
+    </div>
+
+  </div>
+
+</section>
+
+</div>
 
 
-    /* 完成 */
+<footer class="page-footer">
 
-    row.querySelector("input")
-      .onchange = event => {
+  <span>
+    ● Dashboard V3
+  </span>
 
-        todo.done =
-          event.target.checked;
+  <span>
+    Personal data stays off GitHub
+  </span>
 
-        save();
+</footer>
 
-      };
-
-
-    /* 修改優先級 */
-
-    const priority =
-      row.querySelector("select");
+</main>
 
 
-    priority.value =
-      todo.p;
+<!-- =========================
+     SETTINGS
+========================= -->
+
+<div id="settingsPanel"
+     class="settings-panel"
+     onclick="closeSettings(event)">
+
+  <div class="settings-box"
+       onclick="event.stopPropagation()">
+
+    <button
+      class="close-settings"
+      onclick="closeSettings()">
+      ×
+    </button>
+
+    <div class="settings-title">
+      設定
+    </div>
 
 
-    priority.onchange =
-      event => {
+    <div class="setting-item">
 
-        todo.p =
-          event.target.value;
+      <div class="setting-label">
+        📅 Calendar
+      </div>
 
-        save();
+      <div class="setting-description">
+        Apple / Google Calendar integration
+        預留架構。實際公司 Calendar 權限
+        不會直接公開到 GitHub。
+      </div>
 
-      };
-
-
-    /* 雙擊修改文字 */
-
-    row.querySelector("span")
-      .ondblclick = () => {
-
-        const input =
-          document.createElement("input");
+    </div>
 
 
-        input.className =
-          "edit";
+    <div class="setting-item">
+
+      <div class="setting-label">
+        🚆 交通
+      </div>
+
+      <div class="setting-description">
+        目前使用公開時刻表 Demo data。
+        日後可接即時交通 API。
+      </div>
+
+    </div>
 
 
-        input.value =
-          todo.text;
+    <div class="setting-item">
+
+      <div class="setting-label">
+        🔐 Privacy
+      </div>
+
+      <div class="setting-description">
+        GitHub Pages 只放前端程式。
+        不應把 Calendar token、密碼、
+        公司資料或私人 API Key 寫入這個檔案。
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 
-        row.replaceChild(
-          input,
-          row.querySelector("span")
-        );
+<script>
+
+/* ==================================================
+   CLOCK
+================================================== */
+
+function getTime(timeZone) {
+
+  return new Intl.DateTimeFormat(
+    "zh-HK",
+    {
+      timeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    }
+  ).format(new Date());
+
+}
 
 
-        input.focus();
+function updateClock() {
+
+  document.getElementById("japanTime")
+    .textContent =
+    getTime("Asia/Tokyo");
+
+  document.getElementById("hongKongTime")
+    .textContent =
+    getTime("Asia/Hong_Kong");
+
+  document.getElementById("dfwTime")
+    .textContent =
+    getTime("America/Chicago");
+
+  document.getElementById("fraTime")
+    .textContent =
+    getTime("Europe/Berlin");
 
 
-        const finish = () => {
+  const date =
+    new Intl.DateTimeFormat(
+      "zh-Hant-HK",
+      {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        weekday: "long"
+      }
+    ).format(new Date());
 
-          const value =
-            input.value.trim();
+  document.getElementById("dateText")
+    .textContent = date;
 
-
-          if(value){
-
-            todo.text =
-              value;
-
-          }
-
-
-          save();
-
-        };
-
-
-        input.onkeydown =
-          event => {
-
-            if(event.key === "Enter"){
-
-              finish();
-
-            }
-
-          };
+}
 
 
-        input.onblur =
-          finish;
+updateClock();
 
-      };
-
-
-    /* 垃圾桶 */
-
-    row.querySelector(".del")
-      .onclick = () => {
-
-        todos =
-          todos.filter(
-            item =>
-              item.id !== todo.id
-          );
-
-        save();
-
-      };
+setInterval(updateClock, 1000);
 
 
-    list.appendChild(row);
+/* ==================================================
+   TRANSPORT DATA
+================================================== */
+
+const transportData = {
+
+  HND: {
+
+    outbound: [
+
+      {
+        time: "05:20",
+        distance: "792m",
+        icon: "🚌",
+        route:
+          "Airport Limousine・新浦安駅 → 羽田 T3",
+        detail:
+          "到達 06:05・45 min・直達 / Direct・Terminal 3 first stop"
+      },
+
+      {
+        time: "06:10",
+        distance: "842m",
+        icon: "🚌",
+        route:
+          "Airport Limousine・新浦安駅 → 羽田 T1/T2",
+        detail:
+          "到達 07:00・50 min・直達 / Direct"
+      },
+
+      {
+        time: "06:32",
+        distance: "864m",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 京急 / モノレール",
+        detail:
+          "到達 07:38・66 min・2 transfers（東京 / 浜松町）"
+      },
+
+      {
+        time: "07:15",
+        distance: "907m",
+        icon: "🚌",
+        route:
+          "Airport Limousine・新浦安駅 → 羽田 T3",
+        detail:
+          "到達 08:10・55 min・直達 / Direct・Morning traffic buffer"
+      },
+
+      {
+        time: "08:04",
+        distance: "956m",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 東京モノレール",
+        detail:
+          "到達 09:08・64 min・2 transfers"
+      }
+
+    ],
+
+
+    return: [
+
+      {
+        time: "17:10",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・羽田 T3 → 新浦安駅",
+        detail:
+          "到達 18:05・55 min・直達 / Direct"
+      },
+
+      {
+        time: "18:20",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・羽田 T1/T2 → 新浦安駅",
+        detail:
+          "到達 19:10・50 min・直達 / Direct"
+      },
+
+      {
+        time: "19:05",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "東京モノレール → 東京 → JR 京葉線",
+        detail:
+          "到達 20:11・66 min・2 transfers"
+      },
+
+      {
+        time: "20:15",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・羽田 T3 → 新浦安駅",
+        detail:
+          "到達 21:10・55 min・直達 / Direct"
+      }
+
+    ]
+
+  },
+
+
+  NRT: {
+
+    outbound: [
+
+      {
+        time: "05:30",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・新浦安駅 → 成田空港",
+        detail:
+          "到達 06:35・65 min・直達 / Direct"
+      },
+
+      {
+        time: "06:20",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 成田エクスプレス",
+        detail:
+          "到達 07:45・85 min・1 transfer"
+      },
+
+      {
+        time: "07:10",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・新浦安駅 → 成田空港",
+        detail:
+          "到達 08:20・70 min・直達 / Direct"
+      },
+
+      {
+        time: "08:00",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 成田エクスプレス",
+        detail:
+          "到達 09:25・85 min・1 transfer"
+      }
+
+    ],
+
+
+    return: [
+
+      {
+        time: "17:00",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・成田空港 → 新浦安駅",
+        detail:
+          "到達 18:10・70 min・直達 / Direct"
+      },
+
+      {
+        time: "18:00",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "成田エクスプレス → 東京 → JR 京葉線",
+        detail:
+          "到達 19:25・85 min・1 transfer"
+      },
+
+      {
+        time: "19:15",
+        distance: "—",
+        icon: "🚌",
+        route:
+          "Airport Limousine・成田空港 → 新浦安駅",
+        detail:
+          "到達 20:25・70 min・直達 / Direct"
+      }
+
+    ]
+
+  },
+
+
+  AOTO: {
+
+    outbound: [
+
+      {
+        time: "06:00",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 京成本線 → 青砥",
+        detail:
+          "到達 07:10・70 min・2 transfers"
+      },
+
+      {
+        time: "06:30",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "新浦安 → 東京 → 都営浅草線 → 青砥",
+        detail:
+          "到達 07:42・72 min・2 transfers"
+      },
+
+      {
+        time: "07:05",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "JR 京葉線 → 東京 → 京成線 → 青砥",
+        detail:
+          "到達 08:18・73 min・2 transfers"
+      },
+
+      {
+        time: "07:40",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "新浦安 → 東京 → 都営浅草線 → 青砥",
+        detail:
+          "到達 08:55・75 min・2 transfers"
+      }
+
+    ],
+
+
+    return: [
+
+      {
+        time: "17:30",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "青砥 → 京成線 → 東京 → JR 京葉線 → 新浦安",
+        detail:
+          "到達 18:45・75 min・2 transfers"
+      },
+
+      {
+        time: "18:10",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "青砥 → 都営浅草線 → 東京 → 新浦安",
+        detail:
+          "到達 19:22・72 min・2 transfers"
+      },
+
+      {
+        time: "19:00",
+        distance: "—",
+        icon: "🚇",
+        route:
+          "青砥 → 京成本線 → 東京 → JR 京葉線",
+        detail:
+          "到達 20:13・73 min・2 transfers"
+      }
+
+    ]
+
+  }
+
+};
+
+
+let currentDestination = "HND";
+let currentDirection = "outbound";
+
+
+/* ==================================================
+   TRANSPORT
+================================================== */
+
+function selectDestination(destination) {
+
+  currentDestination = destination;
+
+  document
+    .querySelectorAll(".transport-tab")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+  document
+    .querySelector(
+      `.transport-tab[data-destination="${destination}"]`
+    )
+    ?.classList.add("active");
+
+
+  updateDirectionText();
+
+  renderTransport();
+
+}
+
+
+function selectDirection(direction) {
+
+  currentDirection = direction;
+
+  document
+    .querySelectorAll(".direction-tab")
+    .forEach(btn => {
+      btn.classList.remove("active");
+    });
+
+  document
+    .querySelector(
+      `.direction-tab[data-direction="${direction}"]`
+    )
+    ?.classList.add("active");
+
+  renderTransport();
+
+}
+
+
+function updateDirectionText() {
+
+  const names = {
+    HND: "羽田",
+    NRT: "成田",
+    AOTO: "青砥"
+  };
+
+  const name =
+    names[currentDestination];
+
+  document
+    .querySelector(
+      '.direction-tab[data-direction="outbound"]'
+    )
+    .textContent =
+    `去程・新浦安 → ${name}`;
+
+
+  document
+    .querySelector(
+      '.direction-tab[data-direction="return"]'
+    )
+    .textContent =
+    `回程・${name} → 新浦安`;
+
+}
+
+
+function renderTransport() {
+
+  const container =
+    document.getElementById("transportResults");
+
+  const routes =
+    transportData
+      [currentDestination]
+      [currentDirection];
+
+
+  container.innerHTML =
+    routes.map(route => `
+
+      <div class="transport-result">
+
+        <div class="transport-time">
+
+          <div class="departure-time">
+            ${route.time}
+          </div>
+
+          <div class="distance">
+            ${route.distance}
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <div class="transport-route">
+            ${route.icon}
+            ${route.route}
+          </div>
+
+          <div class="transport-details">
+            ${route.detail}
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+function refreshTransport() {
+
+  const button =
+    document.querySelector(
+      ".transport-card .refresh"
+    );
+
+  button.style.transform =
+    "rotate(180deg)";
+
+  setTimeout(() => {
+    button.style.transform = "";
+  },350);
+
+  renderTransport();
+
+}
+
+
+/* ==================================================
+   WEATHER
+================================================== */
+
+function refreshWeather() {
+
+  const button =
+    document.querySelector(
+      ".row-weather-transport .card:first-child .refresh"
+    );
+
+  button.style.transform =
+    "rotate(180deg)";
+
+  setTimeout(() => {
+    button.style.transform = "";
+  },350);
+
+}
+
+
+/* ==================================================
+   CALENDAR
+================================================== */
+
+function calendarFilter(type, button) {
+
+  document
+    .querySelectorAll(".filter-btn")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+  button.classList.add("active");
+
+}
+
+
+function refreshCalendar() {
+
+  alert(
+    "Calendar integration 預留中。\n\n" +
+    "之後會接 Apple / Google Calendar，" +
+    "但不會將私人 Calendar 資料放入 GitHub。"
+  );
+
+}
+
+
+/* ==================================================
+   ROSTER
+================================================== */
+
+function refreshRoster() {
+
+  alert(
+    "Roster 目前使用手動 / Demo data。\n" +
+    "之後可以加入你自己的 roster import。"
+  );
+
+}
+
+
+/* ==================================================
+   SCHEDULE
+================================================== */
+
+function refreshSchedule() {
+
+  alert(
+    "今日行程目前使用 Calendar Demo data。"
+  );
+
+}
+
+
+/* ==================================================
+   TODO
+================================================== */
+
+let todos = [];
+
+
+function loadTodos() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "pakun-dashboard-todos"
+      );
+
+    if (saved) {
+      todos = JSON.parse(saved);
+    }
+
+  } catch(e) {
+
+    todos = [];
+
+  }
+
+}
+
+
+function saveTodos() {
+
+  localStorage.setItem(
+    "pakun-dashboard-todos",
+    JSON.stringify(todos)
+  );
+
+}
+
+
+function todoEnter(event) {
+
+  if (event.key === "Enter") {
+    addTodo();
+  }
+
+}
+
+
+function addTodo() {
+
+  const input =
+    document.getElementById("todoInput");
+
+  const priority =
+    document.getElementById("todoPriority");
+
+  const text =
+    input.value.trim();
+
+  if (!text) return;
+
+
+  todos.push({
+
+    id: Date.now(),
+
+    text,
+
+    priority:
+      priority.value,
+
+    done: false
 
   });
 
 
-  const open =
+  input.value = "";
+
+  priority.value = "normal";
+
+  saveTodos();
+
+  renderTodos();
+
+}
+
+
+function toggleTodo(id) {
+
+  const todo =
+    todos.find(item => item.id === id);
+
+  if (!todo) return;
+
+  todo.done = !todo.done;
+
+  saveTodos();
+
+  renderTodos();
+
+}
+
+
+function editTodo(id) {
+
+  const todo =
+    todos.find(item => item.id === id);
+
+  if (!todo) return;
+
+
+  const newText =
+    prompt(
+      "修改待辦事項",
+      todo.text
+    );
+
+  if (
+    newText === null ||
+    !newText.trim()
+  ) {
+    return;
+  }
+
+
+  todo.text =
+    newText.trim();
+
+
+  const newPriority =
+    prompt(
+      "輸入程度：\n" +
+      "high = 重要\n" +
+      "normal = 普通\n" +
+      "low = 低",
+      todo.priority
+    );
+
+
+  if (
+    ["high","normal","low"]
+      .includes(newPriority)
+  ) {
+
+    todo.priority =
+      newPriority;
+
+  }
+
+
+  saveTodos();
+
+  renderTodos();
+
+}
+
+
+function deleteTodo(id) {
+
+  if (
+    !confirm(
+      "確定要刪除呢項待辦事項？"
+    )
+  ) {
+    return;
+  }
+
+
+  todos =
+    todos.filter(
+      item => item.id !== id
+    );
+
+
+  saveTodos();
+
+  renderTodos();
+
+}
+
+
+function priorityText(priority) {
+
+  const map = {
+
+    high: "重要",
+
+    normal: "普通",
+
+    low: "低"
+
+  };
+
+  return map[priority] || "普通";
+
+}
+
+
+function renderTodos() {
+
+  const container =
+    document.getElementById(
+      "todoList"
+    );
+
+
+  if (!todos.length) {
+
+    container.innerHTML = `
+
+      <div style="
+        padding:30px 10px;
+        text-align:center;
+        color:#9aa1ab;
+        font-size:13px;
+      ">
+        暫時沒有待辦事項
+      </div>
+
+    `;
+
+  } else {
+
+    container.innerHTML =
+      todos.map(todo => `
+
+        <div class="
+          todo-row
+          ${todo.done ? "done" : ""}
+        ">
+
+          <input
+            class="todo-check"
+            type="checkbox"
+            ${todo.done ? "checked" : ""}
+            onchange="toggleTodo(${todo.id})"
+          >
+
+
+          <div class="todo-content">
+
+            <div class="todo-text">
+              ${escapeHTML(todo.text)}
+            </div>
+
+            <div class="todo-meta">
+
+              <span class="
+                priority
+                priority-${todo.priority}
+              ">
+                ${priorityText(todo.priority)}
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <div class="todo-actions">
+
+            <button
+              class="todo-action"
+              onclick="editTodo(${todo.id})"
+              title="修改">
+              ✏️
+            </button>
+
+            <button
+              class="todo-action delete"
+              onclick="deleteTodo(${todo.id})"
+              title="刪除">
+              🗑️
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  }
+
+
+  const openCount =
     todos.filter(
       item => !item.done
     ).length;
 
 
-  const done =
-    todos.filter(
-      item => item.done
-    ).length;
-
-
-  document.getElementById("count")
-    .textContent =
-    open + " open · " +
-    done + " done";
+  document.getElementById(
+    "todoCount"
+  ).textContent =
+    `${openCount} 個未完成`;
 
 }
 
 
-render();
+function escapeHTML(text) {
+
+  return text
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+loadTodos();
+
+renderTodos();
+
+
+/* ==================================================
+   NAVIGATION
+================================================== */
+
+function goTo(section, button) {
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+
+  button.classList.add("active");
+
+
+  if (section === "home") {
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  if (section === "calendar") {
+
+    document
+      .getElementById("calendar")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+  }
+
+
+  if (section === "work") {
+
+    document
+      .getElementById("work")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+  }
+
+}
+
+
+/* ==================================================
+   SETTINGS
+================================================== */
+
+function openSettings() {
+
+  document
+    .getElementById("settingsPanel")
+    .classList.add("open");
+
+}
+
+
+function closeSettings(event) {
+
+  if (
+    !event ||
+    event.target.id ===
+      "settingsPanel"
+  ) {
+
+    document
+      .getElementById("settingsPanel")
+      .classList.remove("open");
+
+  }
+
+}
+
+
+/* ==================================================
+   INITIALISE
+================================================== */
+
+updateDirectionText();
+
+renderTransport();
 
 </script>
 
