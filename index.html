@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Daily Command Center</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "SF Pro Text",
+        "Noto Sans TC",
+        sans-serif;
+
+      background: #f3f5f8;
+      color: #1d2430;
+    }
+
+    .topbar {
+      height: 64px;
+      padding: 0 28px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      background: rgba(255,255,255,0.85);
+      border-bottom: 1px solid #e5e7eb;
+
+      position: sticky;
+      top: 0;
+      z-index: 10;
+
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .brand-icon {
+      width: 30px;
+      height: 30px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 9px;
+
+      background: linear-gradient(
+        135deg,
+        #438bdc,
+        #7167d7
+      );
+
+      color: white;
+    }
+
+    .nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav button {
+      border: 0;
+      background: transparent;
+
+      padding: 8px 13px;
+      border-radius: 10px;
+
+      color: #6d7480;
+      cursor: pointer;
+    }
+
+    .nav button.active {
+      background: #e9edf3;
+      color: #202733;
+    }
+
+    .dashboard {
+      max-width: 1450px;
+      margin: auto;
+      padding: 20px 24px;
+    }
+
+    /* HERO */
+
+    .hero {
+      min-height: 235px;
+
+      padding: 28px 30px;
+
+      border-radius: 24px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          125deg,
+          #398bdc,
+          #536fda 55%,
+          #7167d7
+        );
+
+      box-shadow:
+        0 16px 40px rgba(49,91,173,0.18);
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .15em;
+      font-weight: 700;
+      opacity: .65;
+    }
+
+    .greeting {
+      margin-top: 14px;
+      font-size: 17px;
+    }
+
+    .time {
+      margin-top: 14px;
+
+      font-size: 70px;
+      line-height: 1;
+
+      font-weight: 300;
+      letter-spacing: -.05em;
+    }
+
+    .date {
+      margin-top: 10px;
+      font-size: 15px;
+    }
+
+    /* CALENDAR */
+
+    .calendar {
+      margin: 12px 0;
+
+      padding: 13px 16px;
+
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      background: white;
+
+      border: 1px solid #e4e7ed;
+      border-radius: 18px;
+
+      box-shadow:
+        0 6px 18px rgba(26,36,52,.04);
+    }
+
+    .calendar-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: #66707e;
+      white-space: nowrap;
+    }
+
+    .calendar-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .calendar-tabs button {
+      border: 0;
+
+      padding: 6px 10px;
+
+      border-radius: 9px;
+
+      background: #f0f2f6;
+      color: #69717d;
+
+      font-size: 11px;
+    }
+
+    .calendar-tabs button.active {
+      background: #e1e8f6;
+      color: #2d5f9c;
+      font-weight: 700;
+    }
+
+    .calendar-event {
+      font-size: 12px;
+      color: #505866;
+
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* GRID */
+
+    .grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(12, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+    .card {
+      background: white;
+
+      border: 1px solid #e4e7ed;
+      border-radius: 20px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 8px 24px rgba(25,35,50,.045);
+    }
+
+    .card-head {
+      height: 48px;
+
+      padding: 0 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      font-size: 11px;
+      letter-spacing: .13em;
+      font-weight: 700;
+      color: #727a86;
+    }
+
+    .weather {
+      grid-column: span 5;
+    }
+
+    .forecast {
+      grid-column: span 7;
+    }
+
+    .schedule {
+      grid-column: span 6;
+    }
+
+    .roster {
+      grid-column: span 6;
+    }
+
+    .transport {
+      grid-column: span 6;
+    }
+
+    .todo {
+      grid-column: span 6;
+    }
+
+    .language {
+      grid-column: span 4;
+    }
+
+    /* WEATHER */
+
+    .weather-row {
+      margin: 0 14px 9px;
+
+      padding: 12px;
+
+      border-radius: 15px;
+
+      background: #f2f5fa;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .location {
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .temperature {
+      margin-top: 3px;
+
+      font-size: 32px;
+      font-weight: 650;
+    }
+
+    .weather-info {
+      font-size: 10px;
+      color: #747c88;
+    }
+
+    .weather-icon {
+      font-size: 26px;
+    }
+
+    /* FORECAST */
+
+    .forecast-row {
+      display: grid;
+
+      grid-template-columns:
+        65px 35px 1fr 80px;
+
+      align-items: center;
+
+      padding: 7px 17px;
+
+      border-top: 1px solid #eef0f3;
+    }
+
+    .forecast-day {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .forecast-day b {
+      font-size: 12px;
+    }
+
+    .forecast-day small {
+      color: #89909b;
+      font-size: 9px;
+    }
+
+    .rain {
+      color: #4c9ad4;
+      font-size: 10px;
+    }
+
+    .temp-range {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* GENERAL ROW */
+
+    .row {
+      display: grid;
+
+      grid-template-columns:
+        60px 1fr auto;
+
+      gap: 10px;
+
+      align-items: center;
+
+      padding: 9px 17px;
+
+      border-top: 1px solid #eef0f3;
+
+      font-size: 12px;
+    }
+
+    .row time {
+      font-weight: 650;
+    }
+
+    .tag {
+      font-size: 9px;
+
+      padding: 4px 7px;
+
+      border-radius: 8px;
+
+      background: #e9eaed;
+    }
+
+    /* TRANSPORT */
+
+    .route {
+      display: grid;
+
+      grid-template-columns: 55px 1fr;
+
+      gap: 10px;
+
+      margin: 7px 15px;
+
+      padding: 10px;
+
+      background: #f1f4f8;
+
+      border-radius: 12px;
+    }
+
+    .route strong {
+      font-size: 11px;
+    }
+
+    .route small {
+      display: block;
+
+      margin-top: 3px;
+
+      color: #7c8490;
+
+      font-size: 9px;
+    }
+
+    .warning {
+      margin: 9px 15px;
+
+      padding: 8px 10px;
+
+      border-radius: 9px;
+
+      background: #fff4d8;
+
+      color: #927021;
+
+      font-size: 10px;
+    }
+
+    /* TODO */
+
+    .todo-input {
+      margin: 0 15px 8px;
+
+      display: flex;
+
+      border: 1px solid #e0e3e8;
+
+      border-radius: 12px;
+
+      overflow: hidden;
+    }
+
+    .todo-input input {
+      flex: 1;
+
+      border: 0;
+      outline: none;
+
+      padding: 9px 11px;
+
+      font-size: 12px;
+    }
+
+    .todo-input button {
+      border: 0;
+
+      padding: 0 13px;
+
+      cursor: pointer;
+    }
+
+    .todo-item {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 9px 15px;
+
+      border-top: 1px solid #eef0f3;
+
+      font-size: 12px;
+    }
+
+    .todo-item input {
+      accent-color: #438bdc;
+    }
+
+    .todo-item.done span {
+      text-decoration: line-through;
+      color: #a2a7ae;
+    }
+
+    /* LANGUAGE */
+
+    .language-row {
+      display: grid;
+
+      grid-template-columns:
+        32px 1fr auto;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 11px 15px;
+
+      border-top: 1px solid #eef0f3;
+    }
+
+    .language-row strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .language-row small {
+      color: #7e8691;
+      font-size: 9px;
+    }
+
+    .progress {
+      font-size: 11px;
+      color: #5277a0;
+    }
+
+    /* FOOTER */
+
+    footer {
+      display: flex;
+
+      justify-content: space-between;
+
+      padding: 13px 4px;
+
+      color: #89909b;
+
+      font-size: 10px;
+    }
+
+    @media(max-width: 1000px) {
+
+      .grid {
+        grid-template-columns:
+          repeat(6, minmax(0,1fr));
+      }
+
+      .weather,
+      .forecast,
+      .schedule,
+      .roster,
+      .transport,
+      .todo,
+      .language {
+        grid-column: span 3;
+      }
+
+    }
+
+    @media(max-width: 650px) {
+
+      .topbar nav {
+        display: none;
+      }
+
+      .dashboard {
+        padding: 10px;
+      }
+
+      .grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .time {
+        font-size: 52px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+
+  <div class="brand">
+    <div class="brand-icon">✦</div>
+    Daily Command Center
+  </div>
+
+  <nav class="nav">
+    <button class="active">Home</button>
+    <button>Calendar</button>
+    <button>Work</button>
+    <button>Settings</button>
+  </nav>
+
+</header>
+
+
+<main class="dashboard">
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="eyebrow">
+      TOKYO · TODAY
+    </div>
+
+    <div class="greeting">
+      こんにちは · Good afternoon
+    </div>
+
+    <div class="time" id="clock">
+      13:22
+    </div>
+
+    <div class="date" id="date">
+      Sunday, September 6, 2026
+    </div>
+
+  </section>
+
+
+  <!-- CALENDAR -->
+
+  <section class="calendar">
+
+    <div class="calendar-title">
+      📅 CALENDAR
+    </div>
+
+    <div class="calendar-tabs">
+
+      <button class="active">
+        ALL
+      </button>
+
+      <button>
+        🍎 APPLE
+      </button>
+
+      <button>
+        🟢 GOOGLE
+      </button>
+
+    </div>
+
+    <div class="calendar-event">
+
+      <b>03:00</b>
+      Coey Kay Lois dinner
+
+    </div>
+
+  </section>
+
+
+  <!-- CARDS -->
+
+  <div class="grid">
+
+
+    <!-- WEATHER -->
+
+    <section class="card weather">
+
+      <div class="card-head">
+        <div class="card-title">
+          ☼ WEATHER
+        </div>
+      </div>
+
+      <div class="weather-row">
+
+        <div>
+
+          <div class="location">
+            🇯🇵 Shin-Urayasu
+          </div>
+
+          <div class="temperature">
+            24°
+          </div>
+
+          <div class="weather-info">
+            Drizzle · 體感 26°
+            · H 25° / L 22°
+          </div>
+
+        </div>
+
+        <div class="weather-icon">
+          🌦️
+        </div>
+
+      </div>
+
+
+      <div class="weather-row">
+
+        <div>
+
+          <div class="location">
+            🇭🇰 Hong Kong
+          </div>
+
+          <div class="temperature">
+            29°
+          </div>
+
+          <div class="weather-info">
+            Partly cloudy · 體感 34°
+            · H 30° / L 25°
+          </div>
+
+        </div>
+
+        <div class="weather-icon">
+          🌤️
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FORECAST -->
+
+    <section class="card forecast">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          ▦ 9-DAY · SHIN-URAYASU
+        </div>
+
+      </div>
+
+
+      <div class="forecast-row">
+
+        <div class="forecast-day">
+          <b>Today</b>
+          <small>Sep 6</small>
+        </div>
+
+        <span>🌧️</span>
+
+        <span class="rain">
+          ☂ 100%
+        </span>
+
+        <span class="temp-range">
+          22° / 25°
+        </span>
+
+      </div>
+
+
+      <div class="forecast-row">
+
+        <div class="forecast-day">
+          <b>Mon</b>
+          <small>Sep 7</small>
+        </div>
+
+        <span>🌧️</span>
+
+        <span class="rain">
+          ☂ 100%
+        </span>
+
+        <span class="temp-range">
+          26° / 28°
+        </span>
+
+      </div>
+
+
+      <div class="forecast-row">
+
+        <div class="forecast-day">
+          <b>Tue</b>
+          <small>Sep 8</small>
+        </div>
+
+        <span>🌧️</span>
+
+        <span class="rain">
+          ☂ 74%
+        </span>
+
+        <span class="temp-range">
+          24° / 27°
+        </span>
+
+      </div>
+
+
+      <div class="forecast-row">
+
+        <div class="forecast-day">
+          <b>Wed</b>
+          <small>Sep 9</small>
+        </div>
+
+        <span>🌦️</span>
+
+        <span class="rain">
+          ☂ 73%
+        </span>
+
+        <span class="temp-range">
+          22° / 30°
+        </span>
+
+      </div>
+
+
+      <div class="forecast-row">
+
+        <div class="forecast-day">
+          <b>Thu</b>
+          <small>Sep 10</small>
+        </div>
+
+        <span>🌧️</span>
+
+        <span class="rain">
+          ☂ 64%
+        </span>
+
+        <span class="temp-range">
+          20° / 22°
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- SCHEDULE -->
+
+    <section class="card schedule">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          ▣ TODAY'S SCHEDULE
+        </div>
+
+      </div>
+
+      <div class="row">
+        <time>00:00</time>
+        <span>OFF (HKG)</span>
+        <span class="tag">APPLE</span>
+      </div>
+
+      <div class="row">
+        <time>00:00</time>
+        <span>LEAVE (HKG)</span>
+        <span class="tag">APPLE</span>
+      </div>
+
+      <div class="row">
+        <time>03:00</time>
+        <span>Coey Kay Lois dinner</span>
+        <span class="tag">APPLE</span>
+      </div>
+
+      <div class="row">
+        <time>14:00</time>
+        <span>Dashboard build</span>
+        <span class="tag">GOOGLE</span>
+      </div>
+
+    </section>
+
+
+    <!-- ROSTER -->
+
+    <section class="card roster">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          ✈️ WORK / ROSTER
+        </div>
+
+      </div>
+
+      <div class="weather-row">
+
+        <div>
+
+          <div class="eyebrow">
+            TODAY
+          </div>
+
+          <div class="temperature">
+            K室
+          </div>
+
+          <div class="weather-info">
+            09:00–18:00
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="row">
+
+        <time>SEP 8</time>
+        <span>JL 031</span>
+        <span class="tag">NEXT</span>
+
+      </div>
+
+      <div class="row">
+
+        <time>SEP 9</time>
+        <span>JL 032</span>
+        <span class="tag">NEXT</span>
+
+      </div>
+
+      <div class="row">
+
+        <time>SEP 10</time>
+        <span>OFF</span>
+        <span class="tag">REST</span>
+
+      </div>
+
+    </section>
+
+
+    <!-- TRANSPORT -->
+
+    <section class="card transport">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          🚆 新浦安 → 羽田
+        </div>
+
+      </div>
+
+      <div class="warning">
+
+        ⚠ 暫未連接即時交通 API
+        · 以下為參考資料
+
+      </div>
+
+      <div class="route">
+
+        <b>15:10</b>
+
+        <div>
+
+          <strong>
+            Airport Limousine
+          </strong>
+
+          <small>
+            新浦安 → 羽田 · 約 49 min · 直達
+          </small>
+
+        </div>
+
+      </div>
+
+      <div class="route">
+
+        <b>18:05</b>
+
+        <div>
+
+          <strong>
+            京急空港線 → 東京 → JR 京葉線
+          </strong>
+
+          <small>
+            約 68 min · 2 transfers
+          </small>
+
+        </div>
+
+      </div>
+
+      <div class="route">
+
+        <b>21:15</b>
+
+        <div>
+
+          <strong>
+            Airport Limousine
+          </strong>
+
+          <small>
+            新浦安 → 羽田 · 約 55 min · 直達
+          </small>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TODO -->
+
+    <section class="card todo">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          ☷ TO-DO
+        </div>
+
+      </div>
+
+      <div class="todo-input">
+
+        <input
+          id="todoInput"
+          placeholder="加新事項…"
+        >
+
+        <button onclick="addTodo()">
+          ＋
+        </button>
+
+      </div>
+
+
+      <div
+        class="todo-item"
+        onclick="toggleTodo(this)"
+      >
+
+        <input type="checkbox">
+
+        <span>
+          Pack crew bag
+        </span>
+
+      </div>
+
+
+      <div
+        class="todo-item"
+        onclick="toggleTodo(this)"
+      >
+
+        <input type="checkbox">
+
+        <span>
+          Japanese N1 · 20 min
+        </span>
+
+      </div>
+
+
+      <div
+        class="todo-item done"
+        onclick="toggleTodo(this)"
+      >
+
+        <input
+          type="checkbox"
+          checked
+        >
+
+        <span>
+          Laundry
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- LANGUAGE -->
+
+    <section class="card language">
+
+      <div class="card-head">
+
+        <div class="card-title">
+          文 LANGUAGE
+        </div>
+
+      </div>
+
+
+      <div class="language-row">
+
+        <span>🇯🇵</span>
+
+        <div>
+
+          <strong>
+            Japanese
+          </strong>
+
+          <small>
+            N1 · 20 min
+          </small>
+
+        </div>
+
+        <span class="progress">
+          72%
+        </span>
+
+      </div>
+
+
+      <div class="language-row">
+
+        <span>🇹🇭</span>
+
+        <div>
+
+          <strong>
+            Thai
+          </strong>
+
+          <small>
+            Basic phrases
+          </small>
+
+        </div>
+
+        <span class="progress">
+          35%
+        </span>
+
+      </div>
+
+
+      <div class="language-row">
+
+        <span>🇰🇷</span>
+
+        <div>
+
+          <strong>
+            Korean
+          </strong>
+
+          <small>
+            Vocabulary
+          </small>
+
+        </div>
+
+        <span class="progress">
+          28%
+        </span>
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+
+  <footer>
+
+    <span>
+      ● Dashboard V1
+    </span>
+
+    <span>
+      Personal data stays off GitHub
+    </span>
+
+  </footer>
+
+</main>
+
+
+<script>
+
+function updateClock() {
+
+  const now = new Date();
+
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString(
+      "en-GB",
+      {
+        hour: "2-digit",
+        minute: "2-digit"
+      }
+    );
+
+  document.getElementById("date").textContent =
+    now.toLocaleDateString(
+      "en-US",
+      {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      }
+    );
+}
+
+updateClock();
+
+setInterval(updateClock, 1000);
+
+
+function addTodo() {
+
+  const input =
+    document.getElementById("todoInput");
+
+  const text =
+    input.value.trim();
+
+  if (!text) return;
+
+  const item =
+    document.createElement("div");
+
+  item.className = "todo-item";
+
+  item.onclick =
+    function () {
+      toggleTodo(this);
+    };
+
+  item.innerHTML =
+    `<input type="checkbox">
+     <span>${text}</span>`;
+
+  input.value = "";
+
+  document
+    .querySelector(".todo")
+    .appendChild(item);
+}
+
+
+function toggleTodo(item) {
+
+  const checkbox =
+    item.querySelector("input");
+
+  checkbox.checked =
+    !checkbox.checked;
+
+  item.classList.toggle(
+    "done",
+    checkbox.checked
+  );
+}
+
+</script>
+
+</body>
+</html>
